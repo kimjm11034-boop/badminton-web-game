@@ -1,6 +1,6 @@
 import * as T from 'three';
-import {GLTFLoader} from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js';
-import {clone} from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js';
+import {GLTFLoader} from '/vendor/jsm/loaders/GLTFLoader.js';
+import {clone} from '/vendor/jsm/utils/SkeletonUtils.js';
 
 const V=(x=0,y=0,z=0)=>new T.Vector3(x,y,z);
 const mat=(color,roughness=.78)=>new T.MeshStandardMaterial({color,roughness});
