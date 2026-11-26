@@ -1,0 +1,14 @@
+const task=await taskSpace(2),page=task.page('p1');
+console.log(await page.evaluate(()=>({hidden:document.hidden,focus:document.hasFocus(),paused:window.shuttleLab.snapshot().paused})));
+await page.cdp('Page.bringToFront');
+if(await page.evaluate(()=>window.shuttleLab.snapshot().paused))await page.click('#pause');
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=0;});
+const rect=await page.evaluate(()=>document.getElementById('court').getBoundingClientRect().toJSON());
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.phase==='playing'&&s.ball.z>6&&s.ball.vz>0;},undefined,{timeout:10000});
+await page.mouse.move(rect.x+rect.width*.5,rect.y+rect.height*.4);await page.mouse.down();
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.ball.z<6.5&&s.ball.vz<0;},undefined,{timeout:4000});
+for(let i=1;i<=6;i++)await page.mouse.move(rect.x+rect.width*.5-i*3,rect.y+rect.height*.4+i*5);
+await page.mouse.up();
+await page.waitForFunction(()=>window.shuttleLab.snapshot().lastHit===0,undefined,{timeout:2500});
+console.log(await page.evaluate(()=>({feedback:document.getElementById('last-feedback').textContent,target:window.shuttleLab.snapshot().players[0].strokeTarget,motion:window.shuttleLab.pose(0).mode})));
+console.log(await page.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-v4-motion.png'}));

@@ -1,0 +1,12 @@
+const task=await taskSpace(2),page=task.page('p1');
+await page.goto('http://localhost:5173');
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=9999;});
+await page.click('#restart');
+await page.waitForFunction(()=>window.shuttleLab?.snapshot().phase==='service');
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=0;});
+console.log(await page.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-v4-ready.png'}));
+console.log(await page.evaluate(()=>({state:window.shuttleLab.snapshot(),pose:window.shuttleLab.pose(0)})));
+const rect=await page.evaluate(()=>document.getElementById('court').getBoundingClientRect().toJSON());
+await page.mouse.click(rect.x+rect.width*.5,rect.y+rect.height*.65);
+await page.waitForFunction(()=>window.shuttleLab.snapshot().phase==='playing');
+console.log(await page.evaluate(()=>({state:window.shuttleLab.snapshot(),shot:document.getElementById('shot-title').textContent})));

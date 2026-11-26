@@ -1,0 +1,12 @@
+const task=await taskSpace(2),page=task.page('p1');
+await page.click('@21');
+console.log(await page.snapshot());
+console.log(await page.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-ref-manus.png'}));
+const video=await task.newPage();await video.goto('https://www.youtube.com/watch?v=7Cq6jc-8QzQ');
+await video.waitForSelector('video');
+await video.evaluate(()=>{const v=document.querySelector('video');v.muted=true;v.currentTime=45;v.pause();});
+await video.waitForFunction(()=>{const v=document.querySelector('video');return v.currentTime>=44&&v.readyState>=2;});
+console.log(await video.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-ref-step45.png'}));
+await video.evaluate(()=>{document.querySelector('video').currentTime=47;});
+await video.waitForFunction(()=>document.querySelector('video').readyState>=2);
+console.log(await video.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-ref-step47.png'}));

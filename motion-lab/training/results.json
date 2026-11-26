@@ -1,0 +1,369 @@
+{
+  "archives": {
+    "TS_1_전문_1_CP_경기실업_1_MS_남자단식.zip": {
+      "members": 8709,
+      "imagesRead": 999,
+      "roiAttempts": 1998,
+      "retained": 1115
+    },
+    "TS_1_전문_1_CP_경기실업_3_MD_남자복식.zip": {
+      "members": 8709,
+      "imagesRead": 1286,
+      "roiAttempts": 5144,
+      "retained": 1967
+    },
+    "VS_1_전문_1_CP_경기실업_1_MS_남자단식.zip": {
+      "members": 1089,
+      "imagesRead": 580,
+      "roiAttempts": 1160,
+      "retained": 558
+    },
+    "VS_1_전문_1_CP_경기실업_3_MD_남자복식.zip": {
+      "members": 1089,
+      "imagesRead": 368,
+      "roiAttempts": 1472,
+      "retained": 512
+    },
+    "VS_1_전문_2_CU_경기대학_1_MS_남자단식.zip": {
+      "members": 1089,
+      "imagesRead": 16,
+      "roiAttempts": 32,
+      "retained": 10
+    },
+    "VS_1_전문_2_CU_경기대학_3_MD_남자복식.zip": {
+      "members": 1089,
+      "imagesRead": 16,
+      "roiAttempts": 32,
+      "retained": 8
+    },
+    "VS_1_전문_4_SP_훈련스윙실업_1_MS_남자단식.zip": {
+      "members": 194,
+      "imagesRead": 16,
+      "roiAttempts": 32,
+      "retained": 6
+    },
+    "VS_1_전문_6_TP_훈련트레이닝실업_1_MS_남자단식.zip": {
+      "members": 194,
+      "imagesRead": 16,
+      "roiAttempts": 32,
+      "retained": 10
+    },
+    "VS_1_전문_7_TU_훈련트레이닝대학_1_MS_남자단식.zip": {
+      "members": 194,
+      "imagesRead": 16,
+      "roiAttempts": 32,
+      "retained": 3
+    },
+    "VS_1_전문_8_EP_훈련경기실업_1_MS_남자단식.zip": {
+      "members": 907,
+      "imagesRead": 16,
+      "roiAttempts": 32,
+      "retained": 12
+    },
+    "VS_1_전문_9_EU_훈련경기대학_1_MS_남자단식.zip": {
+      "members": 907,
+      "imagesRead": 16,
+      "roiAttempts": 32,
+      "retained": 12
+    }
+  },
+  "holdoutDate": "220804",
+  "names": [
+    "shoulderL",
+    "shoulderR",
+    "elbowL",
+    "elbowR",
+    "wristL",
+    "wristR",
+    "hipL",
+    "hipR",
+    "kneeL",
+    "kneeR",
+    "ankleL",
+    "ankleR",
+    "heelL",
+    "heelR",
+    "toeL",
+    "toeR",
+    "earL",
+    "earR",
+    "handL",
+    "handR",
+    "nose"
+  ],
+  "labelFiles": {
+    "VL_1_전문_1_CP_경기실업_1_MS_남자단식.zip": 1089,
+    "VL_1_전문_1_CP_경기실업_3_MD_남자복식.zip": 1089
+  },
+  "trainPeople": 3416,
+  "testPeople": 1070,
+  "evaluated": 1029,
+  "innerValidationM": {
+    "false": 0.11490063777829805,
+    "true": 0.1302114952280027
+  },
+  "augmentation": false,
+  "trainMatches": [
+    [
+      "220624",
+      "CU",
+      "MD",
+      "10"
+    ],
+    [
+      "220624",
+      "CU",
+      "MS",
+      "07"
+    ],
+    [
+      "220624",
+      "CU",
+      "MS",
+      "08"
+    ],
+    [
+      "220624",
+      "TU",
+      "MS",
+      "09"
+    ],
+    [
+      "220625",
+      "CU",
+      "MD",
+      "20"
+    ],
+    [
+      "220625",
+      "CU",
+      "MS",
+      "17"
+    ],
+    [
+      "220630",
+      "EU",
+      "MS",
+      "27"
+    ],
+    [
+      "220630",
+      "SP",
+      "MS",
+      "38"
+    ],
+    [
+      "220715",
+      "CP",
+      "MS",
+      "04"
+    ],
+    [
+      "220715",
+      "CP",
+      "MS",
+      "07"
+    ],
+    [
+      "220715",
+      "CU",
+      "MD",
+      "03"
+    ],
+    [
+      "220715",
+      "CU",
+      "MS",
+      "01"
+    ],
+    [
+      "220715",
+      "CU",
+      "MS",
+      "02"
+    ],
+    [
+      "220715",
+      "EP",
+      "MS",
+      "09"
+    ],
+    [
+      "220715",
+      "EU",
+      "MS",
+      "10"
+    ],
+    [
+      "220715",
+      "EU",
+      "MS",
+      "11"
+    ],
+    [
+      "220722",
+      "EP",
+      "MS",
+      "10"
+    ],
+    [
+      "220722",
+      "SP",
+      "MS",
+      "15"
+    ],
+    [
+      "220722",
+      "TP",
+      "MS",
+      "37"
+    ],
+    [
+      "220806",
+      "CP",
+      "MD",
+      "18"
+    ],
+    [
+      "220806",
+      "CP",
+      "MD",
+      "19"
+    ],
+    [
+      "220806",
+      "CU",
+      "MD",
+      "23"
+    ]
+  ],
+  "testMatches": [
+    [
+      "220804",
+      "CP",
+      "MD",
+      "03"
+    ],
+    [
+      "220804",
+      "CP",
+      "MS",
+      "01"
+    ]
+  ],
+  "pck10": 0.8990506865570436,
+  "pckJoints": 11798,
+  "legPck10": 0.9131179637787568,
+  "pseudoErrorM": 0.21589114992268196,
+  "meanBaselineM": 0.2449809579312415,
+  "externalPeople": 5,
+  "externalAgreementM": 0.13783484468132856,
+  "calibratedCameras": {
+    "B_220715_CP_MS_R2_04": 11.2,
+    "B_220715_CP_MS_R2_07": 11.77,
+    "B_220715_CP_MS_R4_04": 15.62,
+    "B_220715_CP_MS_R4_07": 15.65,
+    "B_220804_CP_MS_R4_01": 7.71,
+    "B_220804_CP_MS_R6_01": 8.33,
+    "B_220804_CP_MS_R8_01": 43.48,
+    "B_220804_CP_MD_R4_03": 7.75,
+    "B_220804_CP_MD_R6_03": 8.26,
+    "B_220804_CP_MD_R7_03": 21.31,
+    "B_220804_CP_MD_R8_03": 39.22,
+    "B_220806_CP_MD_R4_18": 7.79,
+    "B_220806_CP_MD_R4_19": 7.73
+  },
+  "pooledMotionWindows": {
+    "TS_1_전문_1_CP_경기실업_1_MS_남자단식.zip": {
+      "fittingDateImagesScanned": 4295,
+      "candidateSegments": 1294,
+      "pairAttempts": 96,
+      "acceptedPairs": 28
+    },
+    "TS_1_전문_1_CP_경기실업_3_MD_남자복식.zip": {
+      "fittingDateImagesScanned": 5538,
+      "candidateSegments": 1667,
+      "pairAttempts": 96,
+      "acceptedPairs": 26
+    },
+    "VS_1_전문_1_CP_경기실업_1_MS_남자단식.zip": {
+      "fittingDateImagesScanned": 509,
+      "candidateSegments": 50,
+      "pairAttempts": 39,
+      "acceptedPairs": 16
+    },
+    "VS_1_전문_1_CP_경기실업_3_MD_남자복식.zip": {
+      "fittingDateImagesScanned": 721,
+      "candidateSegments": 99,
+      "pairAttempts": 77,
+      "acceptedPairs": 29
+    },
+    "VS_1_전문_2_CU_경기대학_1_MS_남자단식.zip": {
+      "fittingDateImagesScanned": 1089,
+      "candidateSegments": 120,
+      "pairAttempts": 85,
+      "acceptedPairs": 21
+    },
+    "VS_1_전문_2_CU_경기대학_3_MD_남자복식.zip": {
+      "fittingDateImagesScanned": 830,
+      "candidateSegments": 107,
+      "pairAttempts": 76,
+      "acceptedPairs": 15
+    },
+    "VS_1_전문_4_SP_훈련스윙실업_1_MS_남자단식.zip": {
+      "fittingDateImagesScanned": 194,
+      "candidateSegments": 21,
+      "pairAttempts": 17,
+      "acceptedPairs": 7
+    },
+    "VS_1_전문_6_TP_훈련트레이닝실업_1_MS_남자단식.zip": {
+      "fittingDateImagesScanned": 157,
+      "candidateSegments": 22,
+      "pairAttempts": 17,
+      "acceptedPairs": 11
+    },
+    "VS_1_전문_7_TU_훈련트레이닝대학_1_MS_남자단식.zip": {
+      "fittingDateImagesScanned": 194,
+      "candidateSegments": 19,
+      "pairAttempts": 14,
+      "acceptedPairs": 3
+    },
+    "VS_1_전문_8_EP_훈련경기실업_1_MS_남자단식.zip": {
+      "fittingDateImagesScanned": 907,
+      "candidateSegments": 127,
+      "pairAttempts": 65,
+      "acceptedPairs": 28
+    },
+    "VS_1_전문_9_EU_훈련경기대학_1_MS_남자단식.zip": {
+      "fittingDateImagesScanned": 907,
+      "candidateSegments": 109,
+      "pairAttempts": 73,
+      "acceptedPairs": 26
+    }
+  },
+  "centerline": {
+    "keys": [
+      "head",
+      "neck",
+      "chst",
+      "bely"
+    ],
+    "trainPeople": 3012,
+    "testPeople": 1933,
+    "meanErrorBoxHeight": 0.019771008908550564,
+    "pck10": 0.9980600103466115
+  },
+  "gameMotion": {
+    "trackedPairs": 1572,
+    "sourceSegments": 793,
+    "contributingWindowsByMotion": {
+      "ready": 11,
+      "split": 15,
+      "shuffle": 49,
+      "cross": 51,
+      "lunge": 69,
+      "overhead": 77,
+      "smash": 76
+    }
+  }
+}

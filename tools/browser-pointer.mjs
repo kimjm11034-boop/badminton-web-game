@@ -1,0 +1,16 @@
+const entry=(await listTaskSpaces()).find(s=>s.id===2),task=entry?.ownership==='user'?await claimTaskSpace(2):await taskSpace(2);
+const page=(await task.pages())[0]??await task.adopt((await task.tabs())[0].page);
+await page.goto('http://localhost:5173');
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=9999;});await page.selectOption('#mode','practice');
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=0;});
+await page.waitForFunction(()=>window.shuttleLab?.snapshot().phase==='playing',undefined,{timeout:8000});
+const r=await page.evaluate(()=>document.getElementById('court').getBoundingClientRect().toJSON());
+await page.mouse.move(r.x+300,r.y+300);
+await page.waitForFunction(()=>!document.getElementById('timing-cue').hidden);
+console.log(await page.evaluate(()=>({first:{left:document.getElementById('timing-cue').style.left,top:document.getElementById('timing-cue').style.top}})));
+await page.mouse.move(r.x+480,r.y+360);
+await page.waitForFunction(()=>document.getElementById('timing-cue').style.left==='500px');
+console.log(await page.evaluate(()=>({moved:{left:document.getElementById('timing-cue').style.left,top:document.getElementById('timing-cue').style.top}})));
+await page.mouse.move(r.right-8,r.top+8);
+console.log(await page.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-pointer-gauge.png'}));
+console.log(await page.evaluate(()=>({edge:document.getElementById('timing-cue').getBoundingClientRect().toJSON(),arena:document.getElementById('court').getBoundingClientRect().toJSON()})));

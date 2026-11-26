@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7f7f3"><title>모션 실험실 · Astra</title>
+  <link rel="stylesheet" href="./lab.css">
+</head>
+<body>
+  <header class="mast"><div class="mast-inner"><a class="brand" href="./" aria-label="Astra 모션 실험실"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span>ASTRA<span class="brand-slash">/</span><span class="brand-sub">MOTION LAB</span></a><a class="game-link" href="/">경기 화면 <span aria-hidden="true">↗</span></a></div></header>
+  <main>
+    <div class="headline"><div><p class="eyebrow"><span></span> BADMINTON BIOMECHANICS</p><h1>모션 실험실</h1></div><div class="review-actions"><a class="export" href="./review/">관절 검수 작업장 ↗</a><a class="export" id="edit-current" hidden>이 프레임 수정</a><button id="export" class="export"><i data-icon="download"></i> 프레임 내보내기</button></div></div>
+    <section class="pattern-strip" id="pattern-strip" hidden><div class="pattern-header"><h2>동작 패턴</h2><span id="pattern-summary"></span><button id="expand-patterns" aria-expanded="false">전체 펼치기</button></div><div id="pattern-cards"></div></section>
+    <div class="workspace">
+      <section class="panel player" aria-label="모션 뷰어">
+        <div class="panel-head"><h2><i data-icon="cube"></i> 3D 뷰포트</h2><div class="camera-tabs" aria-label="카메라"><button data-view="source" title="원본의 2D 관절 배치에 맞춘 근사 시점">원본 근사</button><button data-view="rear">후면</button><button data-view="front">정면</button><button data-view="side">측면</button><button data-view="orbit" aria-pressed="true">자유</button></div></div>
+        <div id="stage"><div class="scene-caption"><p id="scene-code"></p><h3 id="scene-name">전위 런지</h3><span id="scene-phase"></span></div><div class="view-tools"><button id="zoom-in" aria-label="확대">+</button><button id="zoom-out" aria-label="축소">−</button></div><div class="view-bottom"><span class="axis-mark" aria-hidden="true">⌖</span><span id="view-info">자유 궤도</span></div><div class="unit">UNIT / m</div><div id="stage-error" hidden></div></div>
+        <div class="transport"><div class="timeline-title"><h2>타임라인</h2><output id="time"></output></div><div class="timeline"><div class="track"><div id="fill"></div><div id="ticks"></div></div><input id="scrub" type="range" min="0" max="1000" step="1" aria-label="모션 타임라인"></div><div class="phases" id="phases" aria-label="단계별 정지"></div><div class="play-row"><div class="play-buttons"><button id="prev" aria-label="이전 단계"><i data-icon="prev"></i></button><button id="play" aria-label="재생"></button><button id="next" aria-label="다음 단계"><i data-icon="next"></i></button><button id="loop" aria-label="반복 재생" aria-pressed="true"><i data-icon="loop"></i></button></div><div class="speed"><span>배속</span><button data-rate=".25">0.25×</button><button data-rate=".5">0.5×</button><button data-rate="1" aria-pressed="true">1×</button></div></div></div>
+        <div id="record" hidden><div class="record-img"><img id="source-photo" alt="같은 장면에서 잘라낸 선수와 영상 관절점"><svg id="centerline" aria-hidden="true"></svg></div><div><strong id="record-title"></strong><p id="record-method"></p><p>연두색은 학습한 머리·목·가슴·복부 위치입니다. 표본 사이는 보간하며 재생 시간은 시연용입니다.</p><small id="record-id"></small></div></div>
+      </section>
+      <aside>
+        <section class="panel library"><div class="panel-head"><h2><i data-icon="layers"></i> 모션 라이브러리</h2></div><div class="source-tabs"><button id="tab-data">원본 모션</button><button id="tab-authored">제작 모션 · 7</button></div>
+          <div id="catalog-browser">
+            <p id="catalog-total" role="status">원본 목록을 불러오는 중입니다.</p>
+            <label>묶어 보기<select id="group-mode"><option value="pattern">비슷한 신체 움직임</option><option value="code">원본 장면 코드</option><option value="manual">내가 분류한 상황</option></select></label>
+            <label><span id="group-caption">동작 패턴</span><select id="action-list"></select></label>
+            <div class="catalog-fields"><label>촬영 카메라<select id="camera-list"></select></label><label>표본 형태<select id="sample-filter"><option value="all">전체</option><option value="motion">연속 관찰</option><option value="still">단일 자세</option><option value="missing">관절 미검출</option></select></label></div>
+            <div class="catalog-pager"><strong id="case-count"></strong><button id="case-prev" aria-label="이전 사례 묶음">‹</button><button id="case-next" aria-label="다음 사례 묶음">›</button></div>
+            <div id="case-grid" aria-label="선수 관찰 사례"></div>
+            <label id="case-jump-label">사례 번호로 이동<input id="case-jump" type="number" min="1" step="1"></label>
+            <button id="nearby" type="button">이 사례와 가장 비슷한 동작 보기</button>
+            <p id="catalog-message" role="status"></p><a class="archive-download" href="./catalog/motion-library.jsonl.gz" download>전체 3D 관절 데이터 받기 ↓</a>
+          </div>
+          <div id="clips"></div><p id="model-info"></p></section>
+        <section class="panel" id="annotation-panel"><div class="panel-head"><h2>내 상황 분류</h2><button id="export-labels" class="label-export">분류 내보내기</button></div><div class="annotation-fields">
+          <div class="catalog-fields"><label>적용 대상<select id="label-target"><option value="track">선수 사례 전체</option><option value="frame">선택한 원본 프레임</option><option value="pattern">비슷한 패턴 전체</option></select></label><label>게임 상황<input id="user-label" placeholder="직접 입력" maxlength="120" list="prior-labels"></label></div><datalist id="prior-labels"></datalist>
+          <div class="catalog-pager"><span id="label-status" role="status"></span><button id="save-label">분류 저장</button></div>
+        </div></section>
+        <section class="panel inspector"><div class="panel-head"><h2><i data-icon="sliders"></i> 관절 진단</h2><span class="tiny">OVERLAY</span></div><div class="toggles" id="toggles"></div></section>
+      </aside>
+    </div>
+    <section class="panel readout"><div class="panel-head"><h2><i data-icon="activity"></i> 프레임 측정값</h2><span class="tiny" id="frame-label"></span></div><div id="metrics"></div><details><summary>묶음 기준과 3D 측정 방법</summary>
+      <p>서로 다른 카메라에서 보이는 몸을 골반 기준으로 맞춘 뒤 손목 위치, 팔꿈치·무릎 각도, 보폭, 상체 기울기를 비교합니다. 연속 사례는 시작과 끝의 변화 방향, 중간 자세와 동작 범위도 반영합니다. 묶음 안의 사례는 대표값에 가까운 순서이며, 개별 유사 사례는 선택한 선수의 움직임에 가까운 순서입니다.</p>
+      <p>원본 장면 코드는 촬영 자료에 붙은 이름입니다. 특정 선수의 역할이나 게임에서 재생할 상황은 직접 분류할 수 있습니다. 분류는 이 브라우저에 저장하며 파일로 내보낼 수 있습니다.</p>
+      <p>원본 이미지에서 공식 라벨 또는 자세 검출기로 읽은 관절 12점을 입체 자세로 복원합니다. 사용 가능한 프레임에는 개별 영상에서 추정한 깊이도 반영합니다. 2D → 3D 기본 모델을 독립 평가할 때는 2022년 8월 4일 촬영분을 학습에서 제외했습니다.</p><p id="study-scores"></p>
+      <p>다리 길이는 0.875 m로 맞춥니다. 무게중심은 분절 질량 비율로 추정합니다. 표시한 지지발은 가장 낮은 발바닥에 근거한 후보입니다. 한 장뿐인 사례는 정지 자세로 표시하고, 연속 사례의 실제 관측점 사이에는 보간을 사용합니다.</p>
+      <p>제작 모션 7개는 학습한 팔다리 비율, 수작업 키프레임, 접지 IK를 사용합니다. <a href="/data/pose-contact-sheet.jpg" target="_blank" rel="noopener">초기 준비 자세 참고 표본 보기 ↗</a></p></details></section>
+  </main>
+  <script type="module" src="./lab.js"></script>
+</body>
+</html>
+

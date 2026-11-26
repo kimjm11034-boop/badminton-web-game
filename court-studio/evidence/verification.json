@@ -1,0 +1,611 @@
+{
+  "animationCount": 67,
+  "bakedFrameCount": 5418,
+  "boneCount": 66,
+  "jointEvaluations": 6780,
+  "projectedEvaluations": 488160,
+  "sensorMeanCm": 0.4202723097694353,
+  "sensorWithin3cm": 0.9997050147492625,
+  "projectedWithin3cm": 0.999918059652573,
+  "maxSensorErrorCm": 3.329277826048037,
+  "perCapture": {
+    "capture-drive-1": {
+      "frames": 74,
+      "meanCm": 0.3956710599066365,
+      "within3cm": 1.0,
+      "horizontal72ViewsWithin3cm": 1.0
+    },
+    "capture-drive-2": {
+      "frames": 74,
+      "meanCm": 0.36525287598223055,
+      "within3cm": 1.0,
+      "horizontal72ViewsWithin3cm": 1.0
+    },
+    "capture-drive-3": {
+      "frames": 75,
+      "meanCm": 0.5088626454324002,
+      "within3cm": 0.9977777777777778,
+      "horizontal72ViewsWithin3cm": 0.9993827160493827
+    },
+    "capture-clear-1": {
+      "frames": 114,
+      "meanCm": 0.3836077080192954,
+      "within3cm": 1.0,
+      "horizontal72ViewsWithin3cm": 1.0
+    },
+    "capture-clear-2": {
+      "frames": 114,
+      "meanCm": 0.332663395510524,
+      "within3cm": 1.0,
+      "horizontal72ViewsWithin3cm": 1.0
+    },
+    "capture-clear-3": {
+      "frames": 114,
+      "meanCm": 0.5379463118782923,
+      "within3cm": 1.0,
+      "horizontal72ViewsWithin3cm": 1.0
+    }
+  },
+  "bodyRotation": {
+    "capture-drive-1": {
+      "pelvisRangeDeg": 68.47,
+      "thoraxRangeDeg": 92.8,
+      "relativeRangeDeg": 42.34,
+      "maxAbsoluteSeparationDeg": 31.92,
+      "skinnedShortsRangeDeg": 71.4,
+      "skinnedJerseyRangeDeg": 94.14
+    },
+    "capture-drive-2": {
+      "pelvisRangeDeg": 93.62,
+      "thoraxRangeDeg": 119.06,
+      "relativeRangeDeg": 36.49,
+      "maxAbsoluteSeparationDeg": 33.65,
+      "skinnedShortsRangeDeg": 97.34,
+      "skinnedJerseyRangeDeg": 119.25
+    },
+    "capture-drive-3": {
+      "pelvisRangeDeg": 55.8,
+      "thoraxRangeDeg": 100.45,
+      "relativeRangeDeg": 49.89,
+      "maxAbsoluteSeparationDeg": 40.48,
+      "skinnedShortsRangeDeg": 60.94,
+      "skinnedJerseyRangeDeg": 100.68
+    },
+    "capture-clear-1": {
+      "pelvisRangeDeg": 99.3,
+      "thoraxRangeDeg": 129.39,
+      "relativeRangeDeg": 53.88,
+      "maxAbsoluteSeparationDeg": 38.88,
+      "skinnedShortsRangeDeg": 105.97,
+      "skinnedJerseyRangeDeg": 127.29
+    },
+    "capture-clear-2": {
+      "pelvisRangeDeg": 105.84,
+      "thoraxRangeDeg": 131.9,
+      "relativeRangeDeg": 42.58,
+      "maxAbsoluteSeparationDeg": 26.37,
+      "skinnedShortsRangeDeg": 108.85,
+      "skinnedJerseyRangeDeg": 130.12
+    },
+    "capture-clear-3": {
+      "pelvisRangeDeg": 94.02,
+      "thoraxRangeDeg": 129.08,
+      "relativeRangeDeg": 60.71,
+      "maxAbsoluteSeparationDeg": 47.79,
+      "skinnedShortsRangeDeg": 99.13,
+      "skinnedJerseyRangeDeg": 127.52
+    },
+    "match-drop": {
+      "pelvisRangeDeg": 25.67,
+      "thoraxRangeDeg": 44.06,
+      "relativeRangeDeg": 32.11,
+      "maxAbsoluteSeparationDeg": 40.29,
+      "skinnedShortsRangeDeg": 27.79,
+      "skinnedJerseyRangeDeg": 39.25
+    },
+    "match-cross-net": {
+      "pelvisRangeDeg": 27.08,
+      "thoraxRangeDeg": 14.11,
+      "relativeRangeDeg": 21.35,
+      "maxAbsoluteSeparationDeg": 18.8,
+      "skinnedShortsRangeDeg": 24.14,
+      "skinnedJerseyRangeDeg": 13.9
+    },
+    "match-drive": {
+      "pelvisRangeDeg": 57.79,
+      "thoraxRangeDeg": 32.72,
+      "relativeRangeDeg": 36.24,
+      "maxAbsoluteSeparationDeg": 20.35,
+      "skinnedShortsRangeDeg": 61.34,
+      "skinnedJerseyRangeDeg": 34.81
+    },
+    "match-lift": {
+      "pelvisRangeDeg": 18.7,
+      "thoraxRangeDeg": 27.41,
+      "relativeRangeDeg": 20.93,
+      "maxAbsoluteSeparationDeg": 14.35,
+      "skinnedShortsRangeDeg": 16.09,
+      "skinnedJerseyRangeDeg": 24.43
+    },
+    "match-push": {
+      "pelvisRangeDeg": 30.5,
+      "thoraxRangeDeg": 21.55,
+      "relativeRangeDeg": 41.86,
+      "maxAbsoluteSeparationDeg": 34.41,
+      "skinnedShortsRangeDeg": 31.31,
+      "skinnedJerseyRangeDeg": 20.86
+    },
+    "match-kill": {
+      "pelvisRangeDeg": 54.1,
+      "thoraxRangeDeg": 39.74,
+      "relativeRangeDeg": 27.22,
+      "maxAbsoluteSeparationDeg": 29.93,
+      "skinnedShortsRangeDeg": 56.13,
+      "skinnedJerseyRangeDeg": 42.08
+    },
+    "match-block": {
+      "pelvisRangeDeg": 54.6,
+      "thoraxRangeDeg": 30.61,
+      "relativeRangeDeg": 44.04,
+      "maxAbsoluteSeparationDeg": 22.45,
+      "skinnedShortsRangeDeg": 53.69,
+      "skinnedJerseyRangeDeg": 32.85
+    },
+    "match-net": {
+      "pelvisRangeDeg": 61.06,
+      "thoraxRangeDeg": 35.04,
+      "relativeRangeDeg": 35.96,
+      "maxAbsoluteSeparationDeg": 18.07,
+      "skinnedShortsRangeDeg": 63.2,
+      "skinnedJerseyRangeDeg": 39.75
+    },
+    "match-smash": {
+      "pelvisRangeDeg": 91.68,
+      "thoraxRangeDeg": 55.04,
+      "relativeRangeDeg": 49.66,
+      "maxAbsoluteSeparationDeg": 34.34,
+      "skinnedShortsRangeDeg": 83.77,
+      "skinnedJerseyRangeDeg": 49.53
+    },
+    "match-short-serve": {
+      "pelvisRangeDeg": 45.38,
+      "thoraxRangeDeg": 13.74,
+      "relativeRangeDeg": 33.49,
+      "maxAbsoluteSeparationDeg": 31.79,
+      "skinnedShortsRangeDeg": 40.45,
+      "skinnedJerseyRangeDeg": 15.21
+    },
+    "match-long-serve": {
+      "pelvisRangeDeg": 89.23,
+      "thoraxRangeDeg": 67.61,
+      "relativeRangeDeg": 37.45,
+      "maxAbsoluteSeparationDeg": 21.47,
+      "skinnedShortsRangeDeg": 85.36,
+      "skinnedJerseyRangeDeg": 68.86
+    },
+    "match-clear": {
+      "pelvisRangeDeg": 103.99,
+      "thoraxRangeDeg": 74.65,
+      "relativeRangeDeg": 32.47,
+      "maxAbsoluteSeparationDeg": 29.99,
+      "skinnedShortsRangeDeg": 97.77,
+      "skinnedJerseyRangeDeg": 71.67
+    },
+    "jump-smash": {
+      "pelvisRangeDeg": 73.0,
+      "thoraxRangeDeg": 118.62,
+      "relativeRangeDeg": 62.3,
+      "maxAbsoluteSeparationDeg": 43.69,
+      "skinnedShortsRangeDeg": 79.45,
+      "skinnedJerseyRangeDeg": 118.88,
+      "pelvisLeadMs": 150.0
+    },
+    "smash": {
+      "pelvisRangeDeg": 72.98,
+      "thoraxRangeDeg": 118.69,
+      "relativeRangeDeg": 62.28,
+      "maxAbsoluteSeparationDeg": 43.69,
+      "skinnedShortsRangeDeg": 81.17,
+      "skinnedJerseyRangeDeg": 118.9,
+      "pelvisLeadMs": 115.5
+    },
+    "back-smash": {
+      "pelvisRangeDeg": 66.97,
+      "thoraxRangeDeg": 115.74,
+      "relativeRangeDeg": 77.47,
+      "maxAbsoluteSeparationDeg": 43.81,
+      "skinnedShortsRangeDeg": 70.83,
+      "skinnedJerseyRangeDeg": 112.25,
+      "pelvisLeadMs": 132.1
+    },
+    "high-clear": {
+      "pelvisRangeDeg": 62.98,
+      "thoraxRangeDeg": 109.08,
+      "relativeRangeDeg": 62.79,
+      "maxAbsoluteSeparationDeg": 43.32,
+      "skinnedShortsRangeDeg": 70.94,
+      "skinnedJerseyRangeDeg": 109.32,
+      "pelvisLeadMs": 149.7
+    },
+    "flat-clear": {
+      "pelvisRangeDeg": 54.71,
+      "thoraxRangeDeg": 98.29,
+      "relativeRangeDeg": 60.08,
+      "maxAbsoluteSeparationDeg": 42.68,
+      "skinnedShortsRangeDeg": 62.05,
+      "skinnedJerseyRangeDeg": 98.58,
+      "pelvisLeadMs": 115.5
+    },
+    "drop": {
+      "pelvisRangeDeg": 53.97,
+      "thoraxRangeDeg": 91.36,
+      "relativeRangeDeg": 54.0,
+      "maxAbsoluteSeparationDeg": 42.64,
+      "skinnedShortsRangeDeg": 60.42,
+      "skinnedJerseyRangeDeg": 91.62,
+      "pelvisLeadMs": 133.0
+    },
+    "back-drop": {
+      "pelvisRangeDeg": 66.97,
+      "thoraxRangeDeg": 104.84,
+      "relativeRangeDeg": 66.59,
+      "maxAbsoluteSeparationDeg": 43.81,
+      "skinnedShortsRangeDeg": 70.82,
+      "skinnedJerseyRangeDeg": 102.91,
+      "pelvisLeadMs": 132.1
+    },
+    "cut": {
+      "pelvisRangeDeg": 51.98,
+      "thoraxRangeDeg": 88.9,
+      "relativeRangeDeg": 52.13,
+      "maxAbsoluteSeparationDeg": 42.83,
+      "skinnedShortsRangeDeg": 58.36,
+      "skinnedJerseyRangeDeg": 89.1,
+      "pelvisLeadMs": 115.6
+    },
+    "back-cut": {
+      "pelvisRangeDeg": 67.0,
+      "thoraxRangeDeg": 104.88,
+      "relativeRangeDeg": 66.59,
+      "maxAbsoluteSeparationDeg": 43.8,
+      "skinnedShortsRangeDeg": 70.84,
+      "skinnedJerseyRangeDeg": 103.04,
+      "pelvisLeadMs": 133.3
+    },
+    "hairpin": {
+      "pelvisRangeDeg": 19.0,
+      "thoraxRangeDeg": 29.99,
+      "relativeRangeDeg": 13.44,
+      "maxAbsoluteSeparationDeg": 11.39,
+      "skinnedShortsRangeDeg": 17.54,
+      "skinnedJerseyRangeDeg": 27.27,
+      "pelvisLeadMs": 99.3
+    },
+    "back-hairpin": {
+      "pelvisRangeDeg": 14.0,
+      "thoraxRangeDeg": 37.0,
+      "relativeRangeDeg": 33.82,
+      "maxAbsoluteSeparationDeg": 18.92,
+      "skinnedShortsRangeDeg": 14.34,
+      "skinnedJerseyRangeDeg": 34.93,
+      "pelvisLeadMs": 150.0
+    },
+    "under": {
+      "pelvisRangeDeg": 30.0,
+      "thoraxRangeDeg": 56.98,
+      "relativeRangeDeg": 39.4,
+      "maxAbsoluteSeparationDeg": 22.94,
+      "skinnedShortsRangeDeg": 33.23,
+      "skinnedJerseyRangeDeg": 56.98,
+      "pelvisLeadMs": 132.5
+    },
+    "back-under": {
+      "pelvisRangeDeg": 14.0,
+      "thoraxRangeDeg": 36.97,
+      "relativeRangeDeg": 33.78,
+      "maxAbsoluteSeparationDeg": 18.89,
+      "skinnedShortsRangeDeg": 14.34,
+      "skinnedJerseyRangeDeg": 35.49,
+      "pelvisLeadMs": 149.7
+    },
+    "push": {
+      "pelvisRangeDeg": 22.0,
+      "thoraxRangeDeg": 44.95,
+      "relativeRangeDeg": 31.42,
+      "maxAbsoluteSeparationDeg": 18.08,
+      "skinnedShortsRangeDeg": 24.34,
+      "skinnedJerseyRangeDeg": 43.76,
+      "pelvisLeadMs": 99.2
+    },
+    "back-push": {
+      "pelvisRangeDeg": 14.0,
+      "thoraxRangeDeg": 36.98,
+      "relativeRangeDeg": 33.76,
+      "maxAbsoluteSeparationDeg": 18.87,
+      "skinnedShortsRangeDeg": 14.35,
+      "skinnedJerseyRangeDeg": 35.26,
+      "pelvisLeadMs": 116.4
+    },
+    "net-kill": {
+      "pelvisRangeDeg": 31.0,
+      "thoraxRangeDeg": 61.0,
+      "relativeRangeDeg": 42.55,
+      "maxAbsoluteSeparationDeg": 26.19,
+      "skinnedShortsRangeDeg": 34.17,
+      "skinnedJerseyRangeDeg": 58.22,
+      "pelvisLeadMs": 98.9
+    },
+    "drive": {
+      "pelvisRangeDeg": 37.98,
+      "thoraxRangeDeg": 72.9,
+      "relativeRangeDeg": 51.25,
+      "maxAbsoluteSeparationDeg": 34.99,
+      "skinnedShortsRangeDeg": 42.8,
+      "skinnedJerseyRangeDeg": 72.86,
+      "pelvisLeadMs": 82.8
+    },
+    "back-drive": {
+      "pelvisRangeDeg": 37.98,
+      "thoraxRangeDeg": 72.95,
+      "relativeRangeDeg": 51.29,
+      "maxAbsoluteSeparationDeg": 35.03,
+      "skinnedShortsRangeDeg": 42.93,
+      "skinnedJerseyRangeDeg": 72.1,
+      "pelvisLeadMs": 99.4
+    },
+    "defence": {
+      "pelvisRangeDeg": 13.0,
+      "thoraxRangeDeg": 26.93,
+      "relativeRangeDeg": 19.43,
+      "maxAbsoluteSeparationDeg": 13.34,
+      "skinnedShortsRangeDeg": 14.81,
+      "skinnedJerseyRangeDeg": 27.53,
+      "pelvisLeadMs": 83.1
+    },
+    "back-defence": {
+      "pelvisRangeDeg": 13.0,
+      "thoraxRangeDeg": 26.95,
+      "relativeRangeDeg": 19.43,
+      "maxAbsoluteSeparationDeg": 13.33,
+      "skinnedShortsRangeDeg": 14.88,
+      "skinnedJerseyRangeDeg": 27.2,
+      "pelvisLeadMs": 82.5
+    },
+    "short-serve": {
+      "pelvisRangeDeg": 5.0,
+      "thoraxRangeDeg": 14.0,
+      "relativeRangeDeg": 11.11,
+      "maxAbsoluteSeparationDeg": 7.09,
+      "skinnedShortsRangeDeg": 6.27,
+      "skinnedJerseyRangeDeg": 13.93,
+      "pelvisLeadMs": 132.5
+    },
+    "fore-serve": {
+      "pelvisRangeDeg": 12.0,
+      "thoraxRangeDeg": 21.99,
+      "relativeRangeDeg": 15.4,
+      "maxAbsoluteSeparationDeg": 10.3,
+      "skinnedShortsRangeDeg": 13.32,
+      "skinnedJerseyRangeDeg": 22.09,
+      "pelvisLeadMs": 132.3
+    },
+    "flick": {
+      "pelvisRangeDeg": 12.0,
+      "thoraxRangeDeg": 22.0,
+      "relativeRangeDeg": 15.4,
+      "maxAbsoluteSeparationDeg": 10.3,
+      "skinnedShortsRangeDeg": 13.4,
+      "skinnedJerseyRangeDeg": 21.98,
+      "pelvisLeadMs": 116.7
+    },
+    "high-serve": {
+      "pelvisRangeDeg": 38.99,
+      "thoraxRangeDeg": 67.97,
+      "relativeRangeDeg": 46.55,
+      "maxAbsoluteSeparationDeg": 33.24,
+      "skinnedShortsRangeDeg": 43.01,
+      "skinnedJerseyRangeDeg": 70.96,
+      "pelvisLeadMs": 133.1
+    },
+    "ready": {
+      "pelvisRangeDeg": 5.0,
+      "thoraxRangeDeg": 7.0,
+      "relativeRangeDeg": 2.0,
+      "maxAbsoluteSeparationDeg": 1.0,
+      "skinnedShortsRangeDeg": 5.41,
+      "skinnedJerseyRangeDeg": 6.99
+    },
+    "split": {
+      "pelvisRangeDeg": 0.0,
+      "thoraxRangeDeg": 0.0,
+      "relativeRangeDeg": 0.0,
+      "maxAbsoluteSeparationDeg": 0.0,
+      "skinnedShortsRangeDeg": 0.43,
+      "skinnedJerseyRangeDeg": 0.03
+    },
+    "shuffle": {
+      "pelvisRangeDeg": 7.0,
+      "thoraxRangeDeg": 5.0,
+      "relativeRangeDeg": 11.44,
+      "maxAbsoluteSeparationDeg": 11.44,
+      "skinnedShortsRangeDeg": 5.83,
+      "skinnedJerseyRangeDeg": 7.18
+    },
+    "cross": {
+      "pelvisRangeDeg": 63.0,
+      "thoraxRangeDeg": 72.0,
+      "relativeRangeDeg": 15.9,
+      "maxAbsoluteSeparationDeg": 15.9,
+      "skinnedShortsRangeDeg": 62.97,
+      "skinnedJerseyRangeDeg": 72.6
+    },
+    "lunge": {
+      "pelvisRangeDeg": 14.0,
+      "thoraxRangeDeg": 20.0,
+      "relativeRangeDeg": 8.05,
+      "maxAbsoluteSeparationDeg": 8.05,
+      "skinnedShortsRangeDeg": 13.06,
+      "skinnedJerseyRangeDeg": 16.22
+    },
+    "sequence-srv-bss": {
+      "pelvisRangeDeg": 13.6,
+      "thoraxRangeDeg": 24.16,
+      "relativeRangeDeg": 21.49,
+      "maxAbsoluteSeparationDeg": 39.32,
+      "skinnedShortsRangeDeg": 14.91,
+      "skinnedJerseyRangeDeg": 21.71
+    },
+    "sequence-srv-fss": {
+      "pelvisRangeDeg": 3.4,
+      "thoraxRangeDeg": 0.06,
+      "relativeRangeDeg": 3.45,
+      "maxAbsoluteSeparationDeg": 13.77,
+      "skinnedShortsRangeDeg": 3.34,
+      "skinnedJerseyRangeDeg": 0.96
+    },
+    "sequence-srv-blh": {
+      "pelvisRangeDeg": 19.85,
+      "thoraxRangeDeg": 38.93,
+      "relativeRangeDeg": 24.39,
+      "maxAbsoluteSeparationDeg": 20.27,
+      "skinnedShortsRangeDeg": 21.62,
+      "skinnedJerseyRangeDeg": 30.0
+    },
+    "sequence-srv-bdn": {
+      "pelvisRangeDeg": 66.55,
+      "thoraxRangeDeg": 74.47,
+      "relativeRangeDeg": 62.14,
+      "maxAbsoluteSeparationDeg": 56.53,
+      "skinnedShortsRangeDeg": 67.54,
+      "skinnedJerseyRangeDeg": 74.75
+    },
+    "sequence-clr-hic": {
+      "pelvisRangeDeg": 46.38,
+      "thoraxRangeDeg": 59.76,
+      "relativeRangeDeg": 52.57,
+      "maxAbsoluteSeparationDeg": 48.71,
+      "skinnedShortsRangeDeg": 46.51,
+      "skinnedJerseyRangeDeg": 49.67
+    },
+    "sequence-clr-dnc": {
+      "pelvisRangeDeg": 13.99,
+      "thoraxRangeDeg": 20.68,
+      "relativeRangeDeg": 20.68,
+      "maxAbsoluteSeparationDeg": 22.92,
+      "skinnedShortsRangeDeg": 14.0,
+      "skinnedJerseyRangeDeg": 20.91
+    },
+    "sequence-clr-udc": {
+      "pelvisRangeDeg": 96.72,
+      "thoraxRangeDeg": 94.14,
+      "relativeRangeDeg": 21.63,
+      "maxAbsoluteSeparationDeg": 14.04,
+      "skinnedShortsRangeDeg": 96.15,
+      "skinnedJerseyRangeDeg": 96.71
+    },
+    "sequence-hpn-fhp": {
+      "pelvisRangeDeg": 57.61,
+      "thoraxRangeDeg": 53.89,
+      "relativeRangeDeg": 18.22,
+      "maxAbsoluteSeparationDeg": 19.7,
+      "skinnedShortsRangeDeg": 54.96,
+      "skinnedJerseyRangeDeg": 53.91
+    },
+    "sequence-hpn-bhp": {
+      "pelvisRangeDeg": 57.82,
+      "thoraxRangeDeg": 69.69,
+      "relativeRangeDeg": 74.16,
+      "maxAbsoluteSeparationDeg": 83.5,
+      "skinnedShortsRangeDeg": 48.99,
+      "skinnedJerseyRangeDeg": 61.48
+    },
+    "sequence-drv-fdv": {
+      "pelvisRangeDeg": 9.39,
+      "thoraxRangeDeg": 20.63,
+      "relativeRangeDeg": 21.14,
+      "maxAbsoluteSeparationDeg": 11.13,
+      "skinnedShortsRangeDeg": 8.8,
+      "skinnedJerseyRangeDeg": 20.14
+    },
+    "sequence-drv-bdv": {
+      "pelvisRangeDeg": 80.58,
+      "thoraxRangeDeg": 69.09,
+      "relativeRangeDeg": 11.91,
+      "maxAbsoluteSeparationDeg": 12.52,
+      "skinnedShortsRangeDeg": 78.23,
+      "skinnedJerseyRangeDeg": 71.76
+    },
+    "sequence-psh-fps": {
+      "pelvisRangeDeg": 14.2,
+      "thoraxRangeDeg": 10.76,
+      "relativeRangeDeg": 17.94,
+      "maxAbsoluteSeparationDeg": 13.59,
+      "skinnedShortsRangeDeg": 13.49,
+      "skinnedJerseyRangeDeg": 13.53
+    },
+    "sequence-psh-bps": {
+      "pelvisRangeDeg": 3.21,
+      "thoraxRangeDeg": 6.49,
+      "relativeRangeDeg": 9.09,
+      "maxAbsoluteSeparationDeg": 8.01,
+      "skinnedShortsRangeDeg": 4.58,
+      "skinnedJerseyRangeDeg": 6.93
+    },
+    "sequence-drp-fdr": {
+      "pelvisRangeDeg": 81.53,
+      "thoraxRangeDeg": 82.43,
+      "relativeRangeDeg": 9.03,
+      "maxAbsoluteSeparationDeg": 5.43,
+      "skinnedShortsRangeDeg": 81.05,
+      "skinnedJerseyRangeDeg": 78.52
+    },
+    "sequence-drp-bdr": {
+      "pelvisRangeDeg": 17.28,
+      "thoraxRangeDeg": 17.53,
+      "relativeRangeDeg": 30.89,
+      "maxAbsoluteSeparationDeg": 19.82,
+      "skinnedShortsRangeDeg": 14.27,
+      "skinnedJerseyRangeDeg": 18.85
+    },
+    "sequence-cut-fcu": {
+      "pelvisRangeDeg": 22.47,
+      "thoraxRangeDeg": 39.86,
+      "relativeRangeDeg": 26.75,
+      "maxAbsoluteSeparationDeg": 19.32,
+      "skinnedShortsRangeDeg": 20.95,
+      "skinnedJerseyRangeDeg": 14.02
+    },
+    "sequence-cut-bcu": {
+      "pelvisRangeDeg": 28.71,
+      "thoraxRangeDeg": 46.85,
+      "relativeRangeDeg": 20.29,
+      "maxAbsoluteSeparationDeg": 13.24,
+      "skinnedShortsRangeDeg": 33.31,
+      "skinnedJerseyRangeDeg": 46.88
+    },
+    "sequence-sms-fsm": {
+      "pelvisRangeDeg": 0.0,
+      "thoraxRangeDeg": 18.95,
+      "relativeRangeDeg": 18.95,
+      "maxAbsoluteSeparationDeg": 9.53,
+      "skinnedShortsRangeDeg": 5.25,
+      "skinnedJerseyRangeDeg": 26.03
+    },
+    "sequence-sms-bsm": {
+      "pelvisRangeDeg": 41.45,
+      "thoraxRangeDeg": 38.71,
+      "relativeRangeDeg": 2.74,
+      "maxAbsoluteSeparationDeg": 1.47,
+      "skinnedShortsRangeDeg": 42.23,
+      "skinnedJerseyRangeDeg": 37.61
+    },
+    "sequence-uni-uni": {
+      "pelvisRangeDeg": 24.15,
+      "thoraxRangeDeg": 47.21,
+      "relativeRangeDeg": 41.14,
+      "maxAbsoluteSeparationDeg": 38.03,
+      "skinnedShortsRangeDeg": 24.95,
+      "skinnedJerseyRangeDeg": 49.19
+    }
+  }
+}

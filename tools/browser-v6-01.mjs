@@ -1,0 +1,12 @@
+const entry=(await listTaskSpaces()).find(s=>s.id===2);const task=entry?.ownership==='user'?await claimTaskSpace(2):await taskSpace(2);
+const page=(await task.pages())[0]??await task.adopt((await task.tabs())[0].page);
+await page.goto('http://localhost:5173');
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=9999;});await page.selectOption('#mode','practice');
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=0;});
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.phase==='playing'&&s.lastHit===1&&s.players[0].contactAt-s.simTime<.5&&s.players[0].contactAt-s.simTime>.3;},undefined,{timeout:8000});
+console.log(await page.evaluate(()=>({s:window.shuttleLab.snapshot(),difficulty:document.getElementById('difficulty').value,cue:document.getElementById('timing-cue').hidden,title:document.getElementById('shot-title').textContent})));
+console.log(await page.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-v6-gauge.png'}));
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.phase==='playing'&&s.simTime-s.players[0].contactAt>.24;},undefined,{timeout:2500});
+const r=await page.evaluate(()=>document.getElementById('court').getBoundingClientRect().toJSON());await page.mouse.click(r.x+r.width*.5,r.y+r.height*.6);
+console.log(await page.evaluate(()=>({s:window.shuttleLab.snapshot(),verdict:document.getElementById('timing-verdict').textContent,feedback:document.getElementById('last-feedback').textContent})));
+console.log(await page.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-v6-miss.png'}));

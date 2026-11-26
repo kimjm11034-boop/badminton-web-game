@@ -1,0 +1,11 @@
+const entry=(await listTaskSpaces()).find(s=>s.id===2),task=entry?.ownership==='user'?await claimTaskSpace(2):await taskSpace(2);
+const page=(await task.pages())[0]??await task.adopt((await task.tabs())[0].page);
+await page.goto('http://localhost:5173');
+await page.evaluate(()=>{const s=JSON.parse(sessionStorage.getItem('shuttle-session'));s.score=[0,0];s.serverIndex=1;s.active=true;s.paused=false;s.settings.mode='match';sessionStorage.setItem('shuttle-session',JSON.stringify(s));});await page.reload();
+await page.waitForFunction(()=>{const s=window.shuttleLab?.snapshot();return s?.phase==='playing'&&s.players[0].contactAt-s.simTime<.65&&s.players[0].contactAt-s.simTime>.5;},undefined,{timeout:8000});
+console.log(await page.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-v7-small.png'}));
+const r=await page.evaluate(()=>document.getElementById('court').getBoundingClientRect().toJSON());await page.mouse.click(r.x+r.width*.5,r.y+r.height*.6);
+console.log(await page.evaluate(()=>({score:window.shuttleLab.snapshot().score,phase:window.shuttleLab.snapshot().phase,pending:window.shuttleLab.snapshot().pending,grade:document.getElementById('last-grade').textContent})));
+await page.waitForFunction(()=>window.shuttleLab.snapshot().lastHit===0,undefined,{timeout:2000});
+console.log(await page.evaluate(()=>({score:window.shuttleLab.snapshot().score,feedback:document.getElementById('last-feedback').textContent})));
+console.log(await page.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-v7-feedback.png'}));

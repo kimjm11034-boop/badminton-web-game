@@ -1,0 +1,16 @@
+const task=await taskSpace(2),page=task.page('p1');
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=9999;});await page.click('#restart');
+await page.waitForFunction(()=>window.shuttleLab.snapshot().phase==='service');
+const rect=await page.evaluate(()=>document.getElementById('court').getBoundingClientRect().toJSON());
+await page.mouse.move(rect.x+rect.width*.55,rect.y+rect.height*.6);await page.mouse.down();
+const t=Date.now();await page.waitForFunction(t=>Date.now()-t>.45*1000,t);
+await page.mouse.move(rect.x+rect.width*.55-60,rect.y+rect.height*.6-20);await page.mouse.up();
+console.log(await page.evaluate(()=>({shot:document.getElementById('shot-title').textContent,state:window.shuttleLab.snapshot()})));
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.lastHit===1&&s.phase==='playing'&&s.ball.z>4.5&&s.ball.vz<0;},undefined,{timeout:7000});
+await page.mouse.move(rect.x+rect.width*.5,rect.y+rect.height*.4);await page.mouse.down();
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.ball.z<3.8&&s.ball.vz<0;},undefined,{timeout:3000});
+await page.mouse.move(rect.x+rect.width*.5-65,rect.y+rect.height*.4+85);await page.mouse.up();
+await page.waitForFunction(()=>window.shuttleLab.snapshot().lastHit===0,undefined,{timeout:2000});
+console.log(await page.evaluate(()=>({feedback:document.getElementById('last-feedback').textContent,target:window.shuttleLab.snapshot().players[0].strokeTarget,motion:window.shuttleLab.pose(0).mode})));
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=0;});
+console.log(await page.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-v4-rally.png'}));

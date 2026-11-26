@@ -1,0 +1,15 @@
+const task=await taskSpace(2),page=task.page('p1');
+await page.click('loc=css:#restart');
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.phase==='playing'&&s.ball.z>4.5;},undefined,{timeout:6000});
+await page.click('loc=css:#pause');
+console.log(await page.evaluate(()=>{const s=window.shuttleLab.snapshot(),q=window.shuttleLab.project(s.ball.x,s.ball.y,s.ball.z),c=document.getElementById('court');return {pause:s.paused,shuttle:q,height:c.clientHeight,width:c.clientWidth};}));
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=0;});
+console.log(await page.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-camera.png'}));
+await page.click('loc=css:#pause');
+await page.waitForFunction(()=>window.shuttleLab.snapshot().phase==='waiting',undefined,{timeout:6000});
+await page.click('loc=css:#replay');
+console.log({replayStarted:await page.evaluate(()=>window.shuttleLab.snapshot().phase)});
+await page.waitForFunction(()=>window.shuttleLab.snapshot().phase!=='replay',undefined,{timeout:12000});
+console.log({replayEnded:await page.evaluate(()=>window.shuttleLab.snapshot().phase)});
+await page.click('loc=css:#pause');
+console.log(await page.snapshot({scope:'full_page'}));

@@ -1,0 +1,12 @@
+const task=await taskSpace(2),page=task.page('p1');
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=9999;});await page.selectOption('#mode','practice');
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=0;});
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.phase==='playing'&&s.ball.z>5&&s.ball.vz>0;},undefined,{timeout:7000});
+const r=await page.evaluate(()=>document.getElementById('court').getBoundingClientRect().toJSON());
+await page.mouse.move(r.x+r.width*.6,r.y+r.height*.55);await page.mouse.down();
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.ball.z<5.2&&s.ball.vz<0;},undefined,{timeout:5000});
+for(let i=1;i<=3;i++)await page.mouse.move(r.x+r.width*.6-i*3,r.y+r.height*.55+i*3);
+await page.mouse.up();
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.lastHit===0||s.phase==='waiting';},undefined,{timeout:2500});
+console.log(await page.evaluate(()=>({feedback:document.getElementById('last-feedback').textContent,renderer:window.shuttleLab.snapshot().renderer,ai:window.shuttleLab.snapshot().players[1],ball:window.shuttleLab.snapshot().ball})));
+console.log(await page.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-v5-rally.png'}));

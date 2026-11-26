@@ -1,0 +1,16 @@
+const task=await taskSpace(2),page=task.page('p1');
+console.log(await page.evaluate(()=>window.shuttleLab.snapshot()));
+const rect=await page.evaluate(()=>document.getElementById('court').getBoundingClientRect().toJSON());
+if((await page.evaluate(()=>window.shuttleLab.snapshot())).phase==='service')await page.mouse.click(rect.x+rect.width*.55,rect.y+rect.height*.6);
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.phase==='service'&&s.serverIndex===1;},undefined,{timeout:15000});
+console.log({oddService:await page.evaluate(()=>window.shuttleLab.snapshot())});
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.phase==='playing'&&s.lastHit===1&&s.ball.y<-.5&&s.ball.z>4.5&&s.ball.vz<0;},undefined,{timeout:6000});
+await page.mouse.move(rect.x+rect.width*.5,rect.y+rect.height*.45);
+await page.mouse.down();
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.ball.z<3.9&&s.ball.vz<0;},undefined,{timeout:3000});
+await page.mouse.move(rect.x+rect.width*.5,rect.y+rect.height*.45+100);
+await page.mouse.up();
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.lastHit===0||s.phase!=='playing';},undefined,{timeout:3000});
+console.log(await page.evaluate(()=>({state:window.shuttleLab.snapshot(),feedback:document.getElementById('last-feedback').textContent,intent:document.getElementById('intent-name').textContent})));
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=0;});
+console.log(await page.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-v3-jump.png'}));

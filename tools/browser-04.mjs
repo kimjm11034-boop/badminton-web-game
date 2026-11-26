@@ -1,0 +1,12 @@
+const task=await taskSpace(2),page=task.page('p1');
+console.log(await page.evaluate(()=>({size:{w:innerWidth,h:innerHeight},canvas:document.getElementById('court').getBoundingClientRect().toJSON(),state:window.shuttleLab.snapshot()})));
+await page.click('loc=css:#restart');
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.phase==='playing'&&s.ball.y<-.6&&s.ball.z>3;},undefined,{timeout:10000});
+const rect=await page.evaluate(()=>document.getElementById('court').getBoundingClientRect().toJSON());
+await page.mouse.move(rect.x+rect.width*.5,rect.y+rect.height*.7);
+await page.mouse.down();
+await page.mouse.move(rect.x+rect.width*.5+10,rect.y+rect.height*.7-65);
+await page.mouse.up();
+await page.waitForFunction(()=>window.shuttleLab.snapshot().rally>=1,undefined,{timeout:3000});
+console.log(await page.evaluate(()=>({state:window.shuttleLab.snapshot(),feedback:document.getElementById('last-feedback').textContent})));
+console.log(await page.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-hit.png'}));

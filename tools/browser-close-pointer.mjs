@@ -1,0 +1,14 @@
+const entry=(await listTaskSpaces()).find(s=>s.id===2),task=!entry?await taskSpace('배드민턴 포인터 간격 확인'):entry.ownership==='user'?await claimTaskSpace(2):await taskSpace(2);
+console.log({space:task.spaceId});
+const page=(await task.pages())[0]??await task.adopt((await task.tabs())[0].page);
+await page.goto('http://localhost:5173');
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=9999;});await page.selectOption('#mode','practice');
+await page.waitForFunction(()=>window.shuttleLab?.snapshot().phase==='playing',undefined,{timeout:8000});
+const r=await page.evaluate(()=>document.getElementById('court').getBoundingClientRect().toJSON());
+await page.mouse.move(r.x+430,r.y+340);
+await page.waitForFunction(()=>!document.getElementById('timing-cue').hidden&&document.getElementById('timing-cue').style.left==='424px');
+console.log(await page.evaluate(()=>{const g=document.getElementById('timing-cue').getBoundingClientRect(),c=document.getElementById('court').getBoundingClientRect();return {centerOffset:{x:g.x+40-(c.x+430),y:g.y+40-(c.y+340)},targetEdgeGap:Math.hypot(34,10)-24};}));
+console.log(await page.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-close-pointer.png'}));
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=9999;});await page.selectOption('#mode','match');
+await page.waitForFunction(()=>window.shuttleLab.snapshot().phase==='service');
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=0;});

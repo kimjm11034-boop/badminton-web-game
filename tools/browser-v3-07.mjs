@@ -1,0 +1,12 @@
+const task=await taskSpace(2),page=task.page('p1');
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=9999;});
+await page.selectOption('#mode','practice');
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.phase==='playing'&&s.ball.z>5&&s.ball.vz>0;},undefined,{timeout:10000});
+const rect=await page.evaluate(()=>document.getElementById('court').getBoundingClientRect().toJSON());
+await page.mouse.move(rect.x+rect.width*.5,rect.y+rect.height*.4);await page.mouse.down();
+await page.waitForFunction(()=>{const s=window.shuttleLab.snapshot();return s.ball.z<5.5&&s.ball.vz<0;},undefined,{timeout:5000});
+await page.mouse.move(rect.x+rect.width*.5,rect.y+rect.height*.4+100);await page.mouse.up();
+await page.waitForFunction(()=>window.shuttleLab.snapshot().lastHit===0,undefined,{timeout:2500});
+console.log(await page.evaluate(()=>({s:window.shuttleLab.snapshot(),feedback:document.getElementById('last-feedback').textContent})));
+await page.evaluate(()=>{document.querySelector('aside').scrollTop=0;});
+console.log(await page.screenshot({path:'C:/Users/Owner/AppData/Local/Temp/shuttle-v3-final.png'}));
