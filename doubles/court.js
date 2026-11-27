@@ -75,6 +75,23 @@ export async function createCourt(canvas,settings){
   const mixer=new T.AnimationMixer(model),root=model.getObjectByName('root');
   actors.push({group,model,mixer,root,active:null,tag:null,swung:-20});
  }
+ // Only the last fraction of the shuttle's actual flight is visible.
+ const samples=[],trailGeometry=new T.BufferGeometry();
+ const trailPositions=new T.Float32BufferAttribute(new Float32Array(12*3),3);
+ trailGeometry.setAttribute('position',trailPositions);
+ const trail=new T.Line(trailGeometry,new T.LineBasicMaterial({color:'#e3f5e1',transparent:true,opacity:.36,depthWrite:false}));
+ trail.frustumCulled=false;scene.add(trail);
+ let trailShot=null;
+ function updateTrail(s){
+  trail.visible=s.phase==='rally'&&Boolean(s.ball);
+  if(!trail.visible||trailShot!==s.lastShot){samples.length=0;trailShot=s.lastShot;}
+  if(!trail.visible)return;
+  while(samples.length && samples[0].time<s.time-.16)samples.shift();
+  if(!samples.length||s.time-samples.at(-1).time>=1/55)samples.push({time:s.time,x:s.ball.x,y:s.ball.z,z:-s.ball.y});
+  samples.forEach((p,i)=>trailPositions.setXYZ(i,p.x,p.y,p.z));
+  trailPositions.setXYZ(samples.length,s.ball.x,s.ball.z,-s.ball.y);
+  trailGeometry.setDrawRange(0,samples.length+1);trailPositions.needsUpdate=true;
+ }
  let yaw=0,lookPitch=0,previousTime=0;const point=V(),aim=V(),grip=V(),dir=V();
  function render(s,held){
   const p=s.players[0],b=s.ball,dt=Math.min(.08,Math.max(0,s.time-previousTime));previousTime=s.time;
@@ -98,6 +115,7 @@ export async function createCourt(canvas,settings){
    actor.mixer.update(dt);actor.model.position.set(-actor.root.position.x,0,-actor.root.position.z);
   }
   shuttle.visible=shadow.visible=!!b;
+  updateTrail(s);
   if(b){shuttle.position.copy(world(b));const distance=shuttle.position.distanceTo(cam.position);
    const metresPerPixel=2*distance*Math.tan(T.MathUtils.degToRad(cam.fov/2))/Math.max(1,canvas.clientHeight);
    const visibilityScale=T.MathUtils.clamp(12*metresPerPixel/.065,1,4);

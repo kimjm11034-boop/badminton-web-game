@@ -1,10 +1,19 @@
-import {clamp,integrate,shotVelocity,gestureMetrics,judgeTiming} from '../physics.js';
+import {COURT,clamp,integrate,shotVelocity,gestureMetrics,judgeTiming} from '../physics.js';
 import {tiers} from './ranks.js';
 
 export const defaults={width:6.10,length:13.40,eye:1.69,pitch:2,fov:72,bird:1.35,arc:1,backArc:1,sensitivity:1,swingLook:.30,volume:.8};
 export const shotNames={drive:'드라이브',clear:'클리어',drop:'드롭',smash:'스매시',lift:'언더 클리어',block:'수비 커트',slice:'공격 커트',net:'헤어핀',crossNet:'크로스 헤어핀',short:'쇼트 서브',long:'롱 서브'};
 const side=id=>id<2?-1:1, team=id=>id>>1;
-export function readSwing(points,seconds,height,front){
+export const overheadHeight=1.55;
+export const smashThreshold=.60;
+// Contact-height bands (user 2026-11-28): smash 2.0-2.5 m; drive and attacking cut 1.25-2.0 m.
+// Below 1.25 m a curved swing is a defensive cut. Between 1.55 and 2.0 m a hard downward
+// swing is a flat attacking drive, not a smash.
+export const smashHeight=2.0;
+export const attackCutHeight=1.25;
+// `release` is the shuttle height when the swing is released: a smash swung at a shuttle at or
+// above 2.0 m stays a smash even if it has dropped a little by the contact (user 2026-11-28).
+export function readSwing(points,seconds,height,front,release=height){
  const g=gestureMetrics(points,seconds);
  let turn=0,absolute=0,maxTurn=0,bends=0,prev=null,angle=null,minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
  for(const p of points){
@@ -15,14 +24,14 @@ export function readSwing(points,seconds,height,front){
  }
  const curve=g.distance>32&&maxX-minX>12&&maxY-minY>10&&bends>=3&&maxTurn<1.28&&Math.abs(turn)>1.85&&Math.abs(turn)>.68*absolute&&g.distance>1.16*Math.hypot(g.dx,g.dy);
  const tap=g.distance<9, horizontal=Math.abs(g.dx)>Math.abs(g.dy)*2.8;
- const force=Math.hypot(g.dx,g.dy)*(.78+.22*clamp(g.speed/600,0,1.6));
+ const power=clamp((curve?g.distance*2/Math.PI:Math.hypot(g.dx,g.dy))/120,0,1);
  let type='drive';
- if(curve)type=height>=1.6?'slice':'block';
+ if(curve)type=height>=attackCutHeight?'slice':'block';
  else if(front&&(tap||horizontal))type=tap?'net':'crossNet';
- else if(!tap&&!horizontal&&g.dy<0)type=height>=1.55?'clear':force>=49?'lift':'block';
- else if(!tap&&!horizontal&&g.dy>0)type=height>=1.58?(force>=67?'smash':'drop'):'block';
+ else if(!tap&&!horizontal&&g.dy<0)type=height>=overheadHeight?'clear':power>=.40?'lift':'block';
+ else if(!tap&&!horizontal&&g.dy>0)type=height>=overheadHeight?(power>=smashThreshold?(Math.max(height,release)>=smashHeight?'smash':'drive'):'drop'):'block';
  const aim=tap?0:clamp(g.dx/Math.max(35,Math.hypot(g.dx,g.dy)),-1,1)*Math.min(1,.36+g.distance/100);
- return {...g,type,aim,curve};
+ return {...g,type,aim,curve,power};
 }
 export const contactQuality=error=>.32+.68*Math.exp(-((error/.255)**2));
 function player(id){return {id,x:0,y:0,vx:0,vy:0,jump:0,jumpV:0,swing:-10,hand:'fore',shot:'drive'};}
@@ -87,37 +96,53 @@ export function createMatch(settings={...defaults},random=Math.random,practice=f
    s.plan.miss=random()<opponent.miss;
   }
  }
- function launch(id,type,target,hand,error=0,serve=false){
+ function launch(id,type,target,hand,error=0,serve=false,power=.7){
   const p=s.players[id],b=s.ball;
   const mapped={short:'serveShort',long:'serveLong',crossNet:'net'}[type]||type;
-  let v=shotVelocity(b,target,mapped);
-  if((v.prediction.netHeight??0)<1.60&&mapped!=='smash'){
-   const loft=shotVelocity(b,target,'block');
-   if((loft.prediction.netHeight??0)>(v.prediction.netHeight??0))v=loft;
-  }
   const stretch=Math.hypot(b.x-p.x,b.y-p.y-.46);
   const quality=id===0&&!serve?contactQuality(error)*(1-.15*clamp((stretch-.50)/.72,0,1)):1;
-  const factor=.62+.38*quality;
-  Object.assign(b,{vx:v.vx*factor,vy:v.vy*factor,vz:v.vz*factor});
+  // Shorten the intended landing before solving. Scaling a solved drop velocity
+  // afterwards destroys the clearance it was selected for.
+  const shaped=['drive','smash','slice','block','drop','clear'].includes(mapped);
+  const targetWithTiming=shaped?target:{x:target.x,y:target.y*(.70+.30*quality)};
+  const origin={...b,drag:COURT.drag};
+  let v=shotVelocity(origin,targetWithTiming,mapped,shaped?power:power*quality,shaped?{quality,error}:null);
+  if(!shaped&&(v.prediction.netHeight??0)<1.58&&mapped!=='drop'){
+   const loft=shotVelocity(origin,targetWithTiming,'block');
+   if((loft.prediction.netHeight??0)>(v.prediction.netHeight??0))v=loft;
+  }
+  Object.assign(b,{vx:v.vx,vy:v.vy,vz:v.vz,drag:v.drag??COURT.drag,brake:v.brake??0,early:v.early??false,dir:v.dir??0});
   s.last=id;s.serviceFlight=serve;s.phase='rally';s.rally++;s.quality=id===0&&!serve?quality:null;
   Object.assign(p,{swing:s.time,strikeAt:s.time,shot:type,hand,hit:{x:b.x,y:b.y,z:b.z}});
-  s.lastShot={id,type,hand,speed:v.speed*factor*3.6,error,at:s.time};forecast();
+  s.lastShot={id,type,hand,power,speed:v.speed*3.6,angle:v.angle,error,at:s.time};forecast();
   signal((id===0?'나':id===1?'파트너':'상대 '+(id-1))+' · '+shotNames[type]);
  }
- function serve(id,hand='fore',long=false){
+ function serve(id,hand='fore',long=false,power=.7){
   const p=s.players[id],r=s.players[s.receiver],dir=-side(id);
   // Target the diagonal service box even if the human receiver has moved away.
   const rx=Math.sign((s.receiver===s.right[team(r.id)]?1:-1)*-side(r.id));
-  const target={x:rx*half()*.45,y:dir*(long?longLine()-.35:shortLine()+.53)};
-  s.serviceSign=rx;followServer();launch(id,long?'long':'short',target,hand,0,true);
+  const target={x:rx*half()*.45,y:dir*(long?longLine()-(1-power)*1.25-.1:shortLine()+.32+power*.55)};
+  s.serviceSign=rx;followServer();launch(id,long?'long':'short',target,hand,0,true,power);
+ }
+ function contactPoint(){
+  const b={...s.ball};
+  for(let i=0;i<8;i++)integrate(b,.065/8);
+  return b;
+ }
+ function preview(points,seconds,projected){
+  const b=s.ball,p=s.players[0];
+  if(!b)return null;
+  const contact=projected??(s.phase==='rally'?contactPoint():b);
+  const g=readSwing(points,seconds,contact.z,Math.abs(contact.y)<shortLine()&&Math.abs(p.y)<shortLine()+.48,b.z);
+  if(s.phase==='serve')g.type=g.dy< -25?'long':'short';
+  return g;
  }
  function swing(hand,points,seconds){
   if(!['serve','rally'].includes(s.phase)||s.pending)return;
-  const p=s.players[0],b=s.ball,g=readSwing(points,seconds,b.z,Math.abs(b.y)<shortLine()&&Math.abs(p.y)<shortLine()+.48);
+  const p=s.players[0],b=s.ball,projected=s.phase==='rally'?contactPoint():b,g=preview(points,seconds,projected);
   p.aim=g.aim;p.cutSign=Math.sign(g.dx)||1;
-  if(s.phase==='serve'){if(s.server===0){s.swings++;serve(0,hand,g.dy< -25);}return;}
+  if(s.phase==='serve'){if(s.server===0){s.swings++;serve(0,hand,g.type==='long',g.power);}return;}
   p.swing=s.time;p.strikeAt=s.time+.065;p.hand=hand;p.shot=g.type;p.hit=null;s.swings++;
-  const projected={...b};for(let i=0;i<8;i++)integrate(projected,.065/8);
   if(team(s.last)===0||s.serviceFlight&&s.receiver!==0||!reachable(p,projected)&&!reachable(p,b)){signal(team(s.last)===0?'상대 코트로 넘어가는 중':s.serviceFlight&&s.receiver!==0?'파트너 리시브':'헛스윙 · 콕 가까이 이동');return;}
   p.hit={x:projected.x,y:projected.y,z:projected.z};
   s.pending={hand,g,at:p.strikeAt,error:p.strikeAt-(s.plan?.human?.at??p.strikeAt)};
@@ -127,8 +152,19 @@ export function createMatch(settings={...defaults},random=Math.random,practice=f
   if(team(s.last)===0||!reachable(p,b)){p.hit=null;signal('헛스윙 · 타점에 닿지 않았습니다');return;}
   let x=b.x+g.aim*half()*1.42;
   if(g.type==='crossNet')x=b.x+Math.sign(g.dx)*half()*(.8+Math.abs(g.aim)*.75);
-  const depth={net:.12,crossNet:.16,drop:.21,slice:.25,block:.23,drive:.70,lift:.87,clear:.92,smash:.58}[g.type];
-  launch(0,g.type,{x:clamp(x,-half()+.1,half()-.1),y:deep()*depth},hand,error);
+  const power=g.power;
+  // Landing past the net (user 2026-11-28), in metres on a 6.7 m half court. Power and a clean
+  // impact spread every stroke over its whole range from any contact position:
+  // smash / clear 4-6, drop 1-2, drive 3-6 (4-6 from below the tape), attacking cut 1-3.5,
+  // defensive cut 1-3. A weak or mistimed stroke lands at the short end.
+  const impact=.35+.65*clamp((contactQuality(error)-.58)/.42,0,1);
+  const span=(near,far,amount)=>(near+(far-near)*clamp(amount,0,1)*impact)/6.7;
+  const depth={net:.11+.10*power,crossNet:.12+.12*power,lift:.57+.38*power,
+   smash:span(4,6,(power-smashThreshold)/(1-smashThreshold)),clear:span(4,6,power),drop:span(1,2,power/smashThreshold),
+   drive:span(b.z<COURT.net+.05?4:3,6,power),
+   // The smallest semicircle the game reads as a cut is about 20% power.
+   slice:span(1,3.5,(power-.2)/.8),block:span(1,3,(power-.2)/.8)}[g.type];
+  launch(0,g.type,{x:clamp(x,-half()+.1,half()-.1),y:deep()*depth},hand,error,false,power);
  }
  function move(p,x,y,speed,dt){
   const dx=x-p.x,dy=y-p.y,n=Math.hypot(dx,dy),step=Math.min(n,speed*dt);
@@ -161,7 +197,10 @@ export function createMatch(settings={...defaults},random=Math.random,practice=f
    if(!respond||s.time<s.plan.target.at-.045||!reachable(a,b)||same&&s.pending)continue;
    if(s.plan.miss)continue;
    if(same&&!s.serviceFlight&&reachable(p,b)&&s.time<s.plan.target.at+.18)continue;
-   const t=random(),type=b.z>2.0&&t<(skill?.attack??.26)?'smash':Math.abs(b.y)<shortLine()&&t<.38?'net':b.z<1.48?'lift':t<.46?'drive':t<.65?'drop':'clear';
+   const t=random(),underAttack=s.lastShot?.type==='smash';
+   let type=b.z>2.0&&t<(skill?.attack??.26)?'smash':Math.abs(b.y)<shortLine()&&t<.38?'net':b.z<1.48?'lift':t<.46?'drive':t<.65?'drop':'clear';
+   if(underAttack&&b.z<overheadHeight&&t<.55)type='block';
+   else if(type==='drop'&&b.z>=overheadHeight&&Math.abs(b.y)>=shortLine())type='slice';
    const humanLane=p.x*.65+(random()-.5)*half()*.88;
    let destX=!same&&random()<.63?humanLane:(random()-.5)*half()*1.65;
    if(skill){
@@ -171,12 +210,14 @@ export function createMatch(settings={...defaults},random=Math.random,practice=f
      destX=edges.reduce((best,x)=>gap(x)>gap(best)?x:best);
     }else destX=destX*skill.placement+p.x*(1-skill.placement);
    }
-   launch(a.id,type,{x:clamp(destX,-half()+.12,half()-.12),y:-dir*deep()*({net:.16,drop:.21,smash:.55,drive:.65,lift:.88,clear:.89}[type])},(b.x-a.x)*-dir<0?'back':'fore');break;
+   const cpuPower=type==='smash'?.62+.37*(skill?.attack??.35):.40+.47*(skill?.placement??.5);
+   const depth={net:.16,drop:.21,smash:.83,drive:.65,lift:.88,clear:.89,block:.24,slice:.30}[type];
+   launch(a.id,type,{x:clamp(destX,-half()+.12,half()-.12),y:-dir*deep()*depth},(b.x-a.x)*-dir<0?'back':'fore',0,false,cpuPower);break;
   }
  }
  function resize(w,l){const rx=w/settings.width,ry=l/settings.length;settings.width=w;settings.length=l;
   for(const q of [...s.players,...(s.ball?[s.ball]:[])]){q.x*=rx;q.y*=ry;if('vx' in q){q.vx*=rx;q.vy*=ry;}}
   if(s.phase==='rally')forecast();
  }
- return {s,start,tick,jump,swing,resize,reachable,timing:()=>s.plan?.human?s.time+.065-s.plan.human.at:null,grade:judgeTiming};
+ return {s,start,tick,jump,swing,preview,resize,reachable,timing:()=>s.plan?.human?s.time+.065-s.plan.human.at:null,grade:judgeTiming};
 }

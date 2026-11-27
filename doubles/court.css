@@ -35,3 +35,13 @@ dialog[data-panel=difficulty]{width:min(600px,calc(100vw - 32px))}
 .tag{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:4px 8px;border-radius:2px;color:#cfe0e0;background:#ffffff12}.tag .icon{width:13px;height:13px}.tag.mine{color:#15230d;background:var(--lime)}.tag.locked{color:#aab6b9;background:#00000040}
 .tier-row .tag+.pick{margin-left:0}.tier-row:not(:has(.tag)) .pick{margin-left:auto}
 
+
+#power-hud{position:absolute;pointer-events:none;bottom:6.5vh;left:50%;transform:translateX(-50%);width:min(300px,48vw);padding:9px 13px;background:#0a1720db;border-top:1px solid #94b0b655;color:#f3f7f5}
+.power-head{display:flex;gap:9px;align-items:baseline;font-size:11px}.power-head strong{font-size:14px}.power-head b{margin-left:auto;color:var(--lime);font:700 13px monospace}
+#power-meter{display:block;appearance:none;width:100%;height:5px;margin:6px 0;border:0;background:#546368}
+#power-meter::-webkit-meter-bar{background:#546368;border:0;border-radius:0;height:5px}
+#power-meter::-webkit-meter-optimum-value{background:var(--lime)}
+#power-meter::-moz-meter-bar{background:var(--lime)}
+#power-hint{display:block;color:#c3d1d4;font-size:11px}
+#power-hud.charging{border-top-color:var(--lime)}
+@media(max-width:720px){#power-hud{bottom:18vh;width:min(280px,78vw)}}

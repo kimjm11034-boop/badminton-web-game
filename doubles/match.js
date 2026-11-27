@@ -1,6 +1,6 @@
 import {createImpactAudio} from './impact-audio.js';
 import {recordShot} from '../lobby/progress.js';
-import {defaults,createMatch,shotNames} from './simulation.js';
+import {defaults,createMatch,shotNames,overheadHeight,smashHeight,attackCutHeight} from './simulation.js';
 import {createCourt} from './court.js';
 import {career,recordResult,tiers,winsToPromote,promotionMatch,selectable} from './ranks.js';
 import {clamp,timingRadius} from '../physics.js';
@@ -176,11 +176,38 @@ function mini(){
  for(const p of s.players){const [x,y]=point(p.x,p.y);map.fillStyle=['#d4ff83','#57d8d1','#ffb287','#ffb287'][p.id];map.beginPath();map.arc(x,y,p.id===0?6:4.5,0,Math.PI*2);map.fill();if(p.id===0){map.strokeStyle='white';map.stroke();}}
  if(s.ball){const [x,y]=point(s.ball.x,s.ball.y);map.fillStyle='white';map.fillRect(x-2,y-2,4,4);}
 }
+function strokeLabel(type,power){
+ return shotNames[type];
+}
+function impactDetail(shot){
+ if(!['smash','drive','slice','block'].includes(shot.type))return '';
+ const direction=Math.abs(shot.angle)<3?'직선에 가까움':shot.angle<0?'하향':'상향';
+ // Same boundary as the PERFECT/GOOD/BAD grade shown next to it.
+ const timing=game.grade(shot.error)==='PERFECT'?'정타':shot.error<0?'이른 타점':'늦은 타점';
+ return ' · '+direction+' · '+timing;
+}
+function powerHud(){
+ const panel=$('power-hud'),serve=s.phase==='serve'&&s.server===0;
+ const incoming=s.phase==='rally'&&s.last>=2;
+ panel.hidden=paused||menu.open||(!serve&&!incoming);
+ if(panel.hidden)return;
+ const high=s.ball.z>=overheadHeight,smashable=s.ball.z>=smashHeight,cutHigh=s.ball.z>=attackCutHeight;
+ const swing=held?game.preview(held.points,(performance.now()-held.start)/1000):null;
+ const percent=Math.floor((swing?.power??0)*100);
+ $('preview-shot').textContent=swing?strokeLabel(swing.type,swing.power):serve?'내 서브':high?'높은 콕':'낮은 콕';
+ const hints={smash:'60%부터 스매시 · 파워·정타일수록 빠르고 깊게',slice:'반원 크기로 길이 조절 · 늦으면 네트 위험',block:'낮게 받아 넘기기 · 이르면 높이 뜹니다',drive:'수평 드래그 · 정타는 낮고 빠르게'};
+ // Hints follow the contact-height bands: smash from 2.0 m, drive / attacking cut 1.25-2.0 m.
+ $('power-hint').textContent=serve?'클릭 쇼트 · 위로 끌면 롱 서브':hints[swing?.type]??(smashable?'↑ 클리어　↓ 드롭·스매시　반원 커트'
+  :high?'↑ 클리어　↓ 드롭·공격 드라이브　반원 공격 커트':cutHigh?'수평 드라이브 · 반원 공격 커트 · ↑ 언더':'수평 드라이브 · 반원 수비 커트 · ↑ 언더');
+ $('power-meter').value=percent;$('power-value').textContent=percent+'%';
+ panel.classList.toggle('charging',Boolean(held));
+}
 function hud(){
+ powerHud();
  $('ours').textContent=s.score[0];$('theirs').textContent=s.score[1];$('rally').textContent='RALLY '+String(s.rally).padStart(2,'0');
  $('call').textContent=paused?'일시정지':s.feedback;
  $('detail').textContent=paused?'Ⅱ 버튼 또는 Esc로 계속하기':s.phase==='serve'?(s.server===0?'클릭은 쇼트 서브 · 위로 드래그하면 롱 서브':'대각선 서비스 코트에서 준비하세요'):s.plan?.actor===1?'파트너가 받습니다':s.plan?.actor===0?'내 타구 · 콕을 따라 이동하세요':'파트너와 수비 위치를 잡으세요';
- if(s.lastShot){const sh=s.lastShot;$('last-shot').textContent=(sh.hand==='back'?'백핸드 ':'포핸드 ')+shotNames[sh.type];$('speed').textContent=Math.round(sh.speed)+' km/h'+(s.quality!==null?' · '+game.grade(sh.error):'');}
+ if(s.lastShot){const sh=s.lastShot;$('last-shot').textContent=(sh.hand==='back'?'백핸드 ':'포핸드 ')+strokeLabel(sh.type,sh.power);$('speed').textContent=Math.round(sh.speed)+' km/h'+(sh.id===0?' · 파워 '+Math.floor(sh.power*100)+'%':'')+(s.quality!==null?' · '+game.grade(sh.error)+impactDetail(sh):'');}
  else{$('last-shot').textContent='—';$('speed').textContent='';}
  if(s.phase==='over'&&matchId){
   const won=s.score[0]>s.score[1],previousRank=progress.rank,finished=matchId,rank=playedRank;
