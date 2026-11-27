@@ -83,3 +83,11 @@
 - 구현: ranks.js에 등급 설명(blurb), promotionMatch, selectable 추가. simulation.js의 start()가 연습에서도 상대 능력치를 적용하되 s.rank는 null로 둔다(승급 집계 없음). play/index.html에 '로비로' 버튼, 등급 선택 버튼, 메뉴 dialog 안의 tier-view 추가. match.js는 select 대신 chosen과 renderTiers를 쓰고, 잠긴 행은 disabled에 "X조 승급 후" 표시. 로비 index.html과 home.js에는 패널 뒤로가기(내부 이동은 한 단계씩, 아니면 닫기), 상점 탭·목록, 프로필 등급 보상 목록을 넣었다. 데이터는 lobby/catalog.js(신규, 가상 장비명)에 있다. Lucide 0.460.0 아이콘을 lobby.svg와 court.svg에 추가했고, 라켓 아이콘만 같은 선 스타일로 직접 그렸다. dev-server.mjs와 build-playtest.mjs에 lobby/catalog.js를 등록했다. CSS는 doubles/court.css와 lobby/home.css에 있다.
 - 검증: npm test 34건 통과(승급전 9/10, 선택 범위, 난이도 지정 연습의 무득점 반복 테스트 추가). 빌드 성공. ego-browser에서 임시 게스트 기록(C조 9/10)으로 '승급전' 배지, 초심~C조만 열림, 초심 선택 시 '하위 등급 대전 · 승급 집계 제외', 연습 8개 등급 모두 열림과 국가대표 선택, 상점 탭 전환, 보상 7개 잠금, 프로필→로그인→뒤로→프로필→뒤로 닫힘, 멀티 뒤로를 확인했다. 임시 기록 29건은 삭제했다. 증거: doubles/evidence/play-intro-tier.png, play-tier-modal.png, play-practice-tier.png, lobby-shop.png, lobby-profile-rewards.png.
 - 미결: 코인 획득, 장비 효과, 보상 해제는 사용자 지시대로 잠금 상태다. 모바일은 보류 중이다.
+- 배포(사용자 지시): f4e626c를 main에 커밋하고 푸시했다. Vercel 프로젝트 3개(badminton-web-game, -cica, -blt6) 모두 success. 공개 주소 https://badminton-web-game.vercel.app/에서 로비, 점프 스매시 이미지, 상점 4개 항목, /play/ 경기장 로딩, 난이도 모달(게스트 초심: 초심만 열림)을 확인했다. 정적 배포라 /api/account는 404이고 로그인 창에는 "계정 서버에 연결할 수 없습니다" 안내가 뜬다. 증거는 doubles/evidence/public-lobby.png, public-play.png. 이 기록 줄은 아직 커밋하지 않았다.
+
+## 2026-11-28 GitHub 저장소 정리 (Claude)
+
+- 사용자 요청: 게임 프로젝트답게 GitHub 사용 설명을 쓰고, 저장소를 깔끔하게 정리하고, 디자인도 다듬기.
+- 변경: README.md를 Minton Web Game 기준으로 새로 썼다(소개, 스크린샷, 모드, 조작, 타구, 등급, 상점·보상, 실행·배포, 구조, 기술, 출처, 로드맵). 이전 SHUTTLE LAB README는 docs/legacy-prototype.md로 옮겨 보존했다. README 이미지는 docs/images/*.jpg 6장이다. 실수로 추적되던 court-studio/build/__pycache__/*.pyc는 추적만 해제했다. 참조가 없는 일회성 검증 스크립트 58개는 tools/archive/로 옮겼다. .gitignore에 README, docs/images, __pycache__ 규칙을 추가했다.
+- 동시 작업: 정리하는 동안 Codex 프로세스가 doubles/match.js, doubles/simulation.js, physics.js, play/index.html을 수정하고 있었다(스매시 기준과 타구 세기 power 등). 한 파일에 한 명만 쓴다는 규칙에 따라 이 파일들은 건드리지 않았고 커밋에도 넣지 않았다. 해당 작업의 writer는 Codex다.
+- 루트의 game.js, style.css, renderer3d.js, motion.js, footwork-clips.js와 motion-lab/, court-studio/ 이동은 구조 변경이라 하지 않았고 README에 '이전 버전 파일'로만 안내했다.

@@ -37,3 +37,11 @@ motion-lab/review/
 !/lobby/photos/*.webp
 !/lobby/photos/credits.json
 !/tests/ranks.test.mjs
+
+# README and its screenshots
+!/README.md
+!/docs/
+!/docs/images/
+!/docs/images/*.jpg
+__pycache__/
+*.pyc
