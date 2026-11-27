@@ -1,6 +1,7 @@
 import {clamp,integrate,shotVelocity,gestureMetrics,judgeTiming} from '../physics.js';
+import {tiers} from './ranks.js';
 
-export const defaults={width:6.10,length:13.40,eye:1.69,pitch:2,fov:72,bird:1.35,arc:1,backArc:1};
+export const defaults={width:6.10,length:13.40,eye:1.69,pitch:2,fov:72,bird:1.35,arc:1,backArc:1,sensitivity:1,swingLook:.30,volume:.8};
 export const shotNames={drive:'드라이브',clear:'클리어',drop:'드롭',smash:'스매시',lift:'언더 클리어',block:'수비 커트',slice:'공격 커트',net:'헤어핀',crossNet:'크로스 헤어핀',short:'쇼트 서브',long:'롱 서브'};
 const side=id=>id<2?-1:1, team=id=>id>>1;
 export function readSwing(points,seconds,height,front){
@@ -25,13 +26,14 @@ export function readSwing(points,seconds,height,front){
 }
 export const contactQuality=error=>.32+.68*Math.exp(-((error/.255)**2));
 function player(id){return {id,x:0,y:0,vx:0,vy:0,jump:0,jumpV:0,swing:-10,hand:'fore',shot:'drive'};}
-export function createMatch(settings={...defaults},random=Math.random){
+export function createMatch(settings={...defaults},random=Math.random,practice=false){
  const s={settings,players:Array.from({length:4},(_,i)=>player(i)),phase:'ready',score:[0,0],server:0,receiver:2,
   right:[0,2],time:0,ball:null,rally:0,last:0,serviceFlight:false,plan:null,quality:null,feedback:'',event:0,swings:0};
  const half=()=>settings.width/2,deep=()=>settings.length/2;
  const shortLine=()=>1.98*deep()/6.7,longLine=()=>5.94*deep()/6.7;
  function signal(msg){s.feedback=msg;s.event++;}
  function setup(){
+  if(practice){s.server=2;s.right=[0,2];}
   const serving=team(s.server),rightCourt=s.score[serving]%2===0;
   s.receiver=rightCourt?s.right[1-serving]:(s.right[1-serving]^1);
   for(const p of s.players){
@@ -39,12 +41,17 @@ export function createMatch(settings={...defaults},random=Math.random){
    p.x=(p.id===s.right[team(p.id)]?1:-1)*-side(p.id)*half()*.47;
    p.y=side(p.id)*deep()*(servingOrReceiving?.44:.71);p.vx=p.vy=p.jump=p.jumpV=0;p.swing=p.strikeAt=-10;p.hit=null;
   }
-  s.phase='serve';s.deadline=s.time+1.15;s.rally=0;s.quality=null;s.serviceFlight=false;s.plan=null;s.pending=null;
+  s.phase='serve';s.deadline=s.time+(s.server>=2?3.5:1.15);s.rally=0;s.quality=null;s.serviceFlight=false;s.plan=null;s.pending=null;
   followServer();signal(s.server===0?'내 서브 · 클릭하면 시작':s.receiver===0?'리시브 준비':s.server===1?'파트너 서브':'상대 서브');
  }
  function followServer(){const p=s.players[s.server];s.ball={x:p.x+.14*-side(p.id),y:p.y-side(p.id)*.94,z:1.10,vx:0,vy:0,vz:0};}
- function start(){s.score=[0,0];s.server=0;s.right=[0,2];s.lastShot=null;setup();}
+ let opponent=null;
+ function start(rank=null){opponent=tiers[rank]??null;s.rank=opponent&&!practice?rank:null;s.score=[0,0];s.server=0;s.right=[0,2];s.lastShot=null;setup();}
  function point(winner,why){
+  if(practice){
+   s.phase='point';s.deadline=s.time+1.25;s.plan=null;s.ball=null;s.pending=null;
+   signal('다음 리시브 준비 · '+why);return;
+  }
   s.score[winner]++;const serving=team(s.server);
   if(winner===serving)s.right[winner]^=1;
   else s.server=s.score[winner]%2===0?s.right[winner]:(s.right[winner]^1);
@@ -67,13 +74,18 @@ export function createMatch(settings={...defaults},random=Math.random){
    for(const b of options){
     const x=clamp(b.x,-half()-.25,half()+.25),y=side(p.id)*clamp(side(p.id)*b.y+.48,.34,deep()+.38);
     const dist=Math.hypot(x-p.x,y-p.y),time=b.at-s.time;
-    const late=Math.max(0,dist-.76-Math.max(0,time-.10)*4.2);
+    const skill=p.id>=2?opponent:null;
+    const late=Math.max(0,dist-.76-Math.max(0,time-(skill?.reaction??.10))*(skill?.speed??4.2));
     const c=late*4+dist*.24+Math.abs(b.z-1.8)*.40+time*.19;
     if(c<cost){cost=c;chosen={...b,standX:x,standY:y};}
    }
    return {id:p.id,cost,chosen};
   }).filter(c=>c.chosen).sort((a,b)=>(a.cost-(a.id===0?.24:0))-(b.cost-(b.id===0?.24:0)));
   s.plan=best.length?{actor:best[0].id,target:best[0].chosen,human:best.find(c=>c.id===0)?.chosen}:null;
+  if(s.plan && s.plan.actor>=2 && opponent){
+   s.plan.moveAt=s.time+opponent.reaction;
+   s.plan.miss=random()<opponent.miss;
+  }
  }
  function launch(id,type,target,hand,error=0,serve=false){
   const p=s.players[id],b=s.ball;
@@ -143,12 +155,22 @@ export function createMatch(settings={...defaults},random=Math.random){
    const same=team(a.id)===0,dir=side(a.id),other=s.players[a.id^1],respond=s.plan?.actor===a.id;
    const tx=respond?s.plan.target.standX:clamp(-other.x*.72+(other.x>0?-.38:.38),-half()*.78,half()*.78);
    const ty=respond?s.plan.target.standY:dir*deep()*(Math.abs(other.y)<deep()*.49?.73:.39);
-   move(a,tx,ty,respond?4.4:2.65,dt);
+   const skill=same?null:opponent;
+   const moving=!(respond&&s.time<s.plan.moveAt);
+   move(a,tx,ty,moving?(respond?(skill?.speed??4.4):(skill?.speed??4.4)*.60):0,dt);
    if(!respond||s.time<s.plan.target.at-.045||!reachable(a,b)||same&&s.pending)continue;
+   if(s.plan.miss)continue;
    if(same&&!s.serviceFlight&&reachable(p,b)&&s.time<s.plan.target.at+.18)continue;
-   const t=random(),type=b.z>2.0&&t<.26?'smash':Math.abs(b.y)<shortLine()&&t<.38?'net':b.z<1.48?'lift':t<.46?'drive':t<.65?'drop':'clear';
+   const t=random(),type=b.z>2.0&&t<(skill?.attack??.26)?'smash':Math.abs(b.y)<shortLine()&&t<.38?'net':b.z<1.48?'lift':t<.46?'drive':t<.65?'drop':'clear';
    const humanLane=p.x*.65+(random()-.5)*half()*.88;
-   const destX=!same&&random()<.63?humanLane:(random()-.5)*half()*1.65;
+   let destX=!same&&random()<.63?humanLane:(random()-.5)*half()*1.65;
+   if(skill){
+    if(random()<skill.placement){
+     const edges=[-half()+.24,0,half()-.24];
+     const gap=x=>Math.min(...s.players.slice(0,2).map(q=>Math.hypot(x-q.x,(-deep()*.65-q.y)*.40)));
+     destX=edges.reduce((best,x)=>gap(x)>gap(best)?x:best);
+    }else destX=destX*skill.placement+p.x*(1-skill.placement);
+   }
    launch(a.id,type,{x:clamp(destX,-half()+.12,half()-.12),y:-dir*deep()*({net:.16,drop:.21,smash:.55,drive:.65,lift:.88,clear:.89}[type])},(b.x-a.x)*-dir<0?'back':'fore');break;
   }
  }

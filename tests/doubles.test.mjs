@@ -32,3 +32,14 @@ test('doubles AI serves, receives, swaps service courts and honors the doubles s
  assert.deepEqual(s.score,[1,0]);for(let i=0;i<155;i++)g.tick(1/120);assert.equal(s.server,0);assert.ok(s.players[0].x<0);assert.equal(s.receiver,3);
  const x=s.players[0].x;g.resize(7,15);assert.ok(Math.abs(s.players[0].x-x*7/6.1)<1e-8);assert.equal(s.settings.length,15);
 });
+
+test('opposing doubles server leaves a full preparation interval after players reset',()=>{
+ const match=createMatch({...defaults},()=>.9),s=match.s;
+ match.start();s.phase='point';s.server=2;s.deadline=s.time;match.tick(1/120);
+ assert.equal(s.phase,'serve');
+ const ready=s.time;
+ for(let i=0;i<419;i++)match.tick(1/120);
+ assert.equal(s.phase,'serve');assert.equal(s.ball.vz,0);
+ for(let i=0;i<3;i++)match.tick(1/120);
+ assert.equal(s.phase,'rally');assert.equal(s.lastShot.id,2);assert.ok(s.lastShot.at-ready>=3.5);
+});

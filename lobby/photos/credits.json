@@ -1,0 +1,11 @@
+{
+  "backdrop": {
+    "file": "arena.webp"
+  },
+  "players": [
+    {
+      "file": "jump-smash.webp",
+      "fit": "full"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-﻿# 복식 경기 장비
+# 복식 경기 장비
 
 두 GLB는 미터 단위이며 게임이 시작될 때 로컬 서버에서 불러온다. [Blender 원본](source/Equipment.blend)에서 두 장비의 메시와 재질을 편집할 수 있다.
 
@@ -14,4 +14,10 @@ Stanislas Perrin이 2002년에 촬영한 깃털 셔틀콕 사진을 사용했다
 
 라켓은 기존 [Astra-Court Blender 프로젝트](../../court-studio/Astra-Court.blend)에서 분리해 내보냈다. 세로 21줄과 가로 23줄, 나선형 그립, 샤프트와 프레임이 들어 있다. 1인칭 포핸드와 백핸드가 사용하는 타점은 그립 원점에서 455 mm 떨어진 스트링 중심이다. 값은 라켓 GLB 노드의 stringBedHeight에 저장했다.
 
-파트너와 상대 두 명에게는 기존 GameMog/MakeHuman 기반 선수와 Blender 애니메이션을 적용했다. 경기의 동작 선택은 67개 클립 중 타구와 이동 상태에 연결한 클립들을 사용한다. [캐릭터와 모션의 원천·측정 범위](../../court-studio/SOURCES.md)
+파트너와 상대 두 명은 새 선수 메시를 공유한다. 가상 선수 정면 원화를 TripoSR로 복원한 뒤 Blender에서 몸통과 유니폼을 기존 리그의 기준 자세에 맞췄다. 얼굴, 손가락, 코트화는 기존 GameMog/MakeHuman 기반 메시를 보완에 사용했다. 66개 관절의 이름과 초기 바인딩 행렬, 기존 67클립의 관절·라켓 애니메이션 샘플은 비교 테스트로 확인했다. 뒷면과 깊이는 단일 시점 추정이다. [편집용 선수 파일](player-source/Athlete.blend) · [게임용 메시](player.glb) · [세 자세 렌더](../evidence/player-motions.png) · [기존 모션 출처](../../court-studio/SOURCES.md)
+
+## 경기장과 소리
+
+2018 일본 오픈 프로그램 10쪽의 경기 사진을 코트 배색 참고로 사용했다. 좌석 배치와 18.15 m 천장은 게임용 설계다. [대회 프로그램](https://www.badminton-archive.com/download/tournament/2018/13/26/1/1#page=10)
+
+라켓 타구음은 Joseph Sardin의 셔틀콕 타격 녹음에서 세 임팩트를 잘라 썼다. 타구 종류, 출발 속도, 타점과 듣는 사람의 거리·방향으로 음량, 고역, 좌우 위치를 조절한다. [원본 녹음](https://bigsoundbank.com/badminton-volant-sur-raquette-s0537.html) · [편집 기록](audio/SOURCE.txt)

@@ -1,13 +1,32 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#19312c"><title>ASTRA COURT · 1인칭 복식</title><link rel="stylesheet" href="/doubles/court.css"><script type="importmap">{"imports":{"three":"/vendor/three.module.js"}}</script></head>
-<body><header><a class="brand" href="/"><i aria-hidden="true"></i> ASTRA <b>COURT</b></a><span class="header-label">배드민턴 <span>/</span> 1인칭 복식</span><nav><a class="feedback-link" href="https://docs.google.com/forms/d/e/1FAIpQLScbD-jT6Vie694ulgbSymw9GH7G_T7qb0W_ov8afK24jioXFw/viewform" target="_blank" rel="noopener noreferrer">플레이 피드백 ↗</a><button id="help" aria-expanded="false">조작법</button><button id="settings" aria-expanded="false">경기 설정</button><button id="pause" aria-label="일시정지" disabled>Ⅱ</button></nav></header>
-<main><section id="arena" aria-label="1인칭 복식 코트"><canvas id="court" tabindex="0" aria-label="WASD 이동, 스페이스 점프, 왼쪽 마우스 백핸드, 오른쪽 마우스 포핸드"></canvas>
-<div class="score"><div class="cap">COURT 01 <span>복식 · 21점</span></div><div class="scoreline"><i></i><span>우리 팀</span><b id="ours">0</b></div><div class="scoreline away"><i></i><span>상대 팀</span><b id="theirs">0</b></div></div>
-<div class="map"><div class="cap">COURT MAP</div><canvas id="map" width="150" height="178" aria-label="선수 네 명과 셔틀콕의 위치"></canvas><span><i></i> 나 <i></i> 파트너</span></div>
-<div class="reticle" aria-hidden="true"></div><div id="cue" hidden><svg viewBox="0 0 64 64"><circle class="target" cx="32" cy="32" r="20"/><circle id="ring" cx="32" cy="32" r="9"/></svg></div>
-<div id="intro"><span class="eyebrow">DOUBLES MATCH</span><h1>복식 경기</h1><p>파트너의 위치를 읽고, 콕에 다가가 스윙하세요.</p><button class="primary" id="start" disabled>코트 준비 중…</button></div>
-<div id="match-hud" hidden><div class="cap" id="rally">RALLY 00</div><strong id="call" aria-live="polite"></strong><p id="detail"></p></div>
-<div id="shot-info"><span class="cap">LAST STROKE</span><strong id="last-shot">—</strong><small id="speed"></small></div>
-<aside id="drawer" hidden><div class="top"><h2 id="drawer-title"></h2><button id="close" aria-label="닫기">×</button></div><div id="guides" hidden><p>버튼을 누른 채 궤적을 그리고, 원형 게이지가 기준 원에 맞을 때 놓으세요.</p><dl><dt>좌클릭 / 우클릭</dt><dd>백핸드 / 포핸드</dd><dt>클릭 · 수평 드래그</dt><dd>직선 · 좌우 드라이브</dd><dt>높은 콕에서 아래로</dt><dd>짧게 드롭, 강하게 스매시. 사선 각도로 코스를 조절합니다.</dd><dt>위로 드래그</dt><dd>높은 콕은 클리어. 낮은 콕은 강하게 언더, 약하게 수비 커트.</dd><dt>부드러운 반원</dt><dd>높은 콕은 공격 커트, 낮은 콕은 수비 커트</dd><dt>네트 앞 클릭 · 수평 드래그</dt><dd>헤어핀 · 드래그 방향 크로스 헤어핀</dd><dt>서브</dt><dd>클릭하면 쇼트, 위로 끌면 롱 서브</dd></dl></div><div id="tuning" hidden><p>경기 중에도 바꿀 수 있습니다. 조절한 값은 이 브라우저에 저장됩니다.</p><div id="sliders"></div><button id="reset">기본값 복원</button><button id="restart">새 경기 시작</button></div></aside>
-</section><footer><div><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 이동</div><div><kbd>SPACE</kbd> 점프</div><div><b>좌클릭</b> 백핸드 <span>/</span> <b>우클릭</b> 포핸드</div><output id="position"></output></footer></main>
-<script type="module" src="/doubles/match.js"></script></body></html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1820"><title>Minton Web Game · 게임 로비</title>
+<link rel="stylesheet" href="/lobby/home.css"><link rel="preload" href="/lobby/photos/arena.webp" as="image">
+</head>
+<body>
+<div class="backdrop" aria-hidden="true"></div>
+<header><a class="brand" href="/" aria-label="Minton Web Game 홈"><i aria-hidden="true"></i>Minton<span> Web Game</span></a>
+<nav aria-label="플레이어 메뉴">
+<button data-panel="friends" aria-label="친구 추가" title="친구 추가"><svg class="icon" aria-hidden="true"><use href="/vendor/lucide/lobby.svg#user-round-plus"></use></svg></button>
+<button data-panel="alerts" aria-label="알림" title="알림"><svg class="icon" aria-hidden="true"><use href="/vendor/lucide/lobby.svg#bell"></use></svg></button>
+<button data-panel="settings" aria-label="설정" title="설정"><svg class="icon" aria-hidden="true"><use href="/vendor/lucide/lobby.svg#settings-2"></use></svg></button>
+<button class="account" id="account"><svg class="icon" aria-hidden="true"><use href="/vendor/lucide/lobby.svg#user-round"></use></svg><span>로그인</span></button>
+</nav></header>
+<main><section aria-labelledby="lobby-title">
+<div class="kicker"><i></i> MATCH LOBBY</div><h1 id="lobby-title">코트 로비<span>.</span></h1>
+<div class="modes" aria-label="게임 모드">
+<a href="/play/" class="mode"><i><svg class="icon" aria-hidden="true"><use href="/vendor/lucide/lobby.svg#play"></use></svg></i><span><strong>싱글 플레이</strong><small>난이도 선택 · 21점 복식 승급전</small></span><svg class="icon" aria-hidden="true"><use href="/vendor/lucide/lobby.svg#chevron-right"></use></svg></a>
+<button data-panel="multi" class="mode"><i><svg class="icon" aria-hidden="true"><use href="/vendor/lucide/lobby.svg#users-round"></use></svg></i><span><strong>멀티 플레이</strong><small>온라인 복식 매치 · 업데이트 예정</small></span><svg class="icon" aria-hidden="true"><use href="/vendor/lucide/lobby.svg#chevron-right"></use></svg></button>
+<a href="/play/?mode=practice" class="mode"><i><svg class="icon" aria-hidden="true"><use href="/vendor/lucide/lobby.svg#crosshair"></use></svg></i><span><strong>AI 연습</strong><small>점수 부담 없이 리시브와 랠리 연습</small></span><svg class="icon" aria-hidden="true"><use href="/vendor/lucide/lobby.svg#chevron-right"></use></svg></a>
+</div>
+<div class="locker"><button data-panel="shop"><svg class="icon" aria-hidden="true"><use href="/vendor/lucide/lobby.svg#shopping-bag"></use></svg>상점</button><button data-panel="profile"><svg class="icon" aria-hidden="true"><use href="/vendor/lucide/lobby.svg#user-round"></use></svg>프로필</button><button data-panel="achievements"><svg class="icon" aria-hidden="true"><use href="/vendor/lucide/lobby.svg#trophy"></use></svg>도전과제</button></div>
+</section>
+<figure id="spotlight" aria-hidden="true">
+<div class="picture"><img alt="" decoding="async"><img alt="" decoding="async"></div>
+</figure></main>
+<footer><div class="credit"><span>© Minton Web Game</span><a href="https://github.com/kimjm11034-boop" target="_blank" rel="noopener noreferrer">GitHub</a><a href="mailto:kimjm11034@gmail.com">kimjm11034@gmail.com</a></div>
+<div class="policies"><button data-panel="privacy">개인정보 처리방침</button><button data-panel="terms">이용약관</button><button data-panel="contact">문의하기</button></div></footer>
+<dialog id="panel" aria-labelledby="panel-title"><div class="panel-head"><button id="back" class="back"><svg class="icon" aria-hidden="true"><use href="/vendor/lucide/lobby.svg#arrow-left"></use></svg>뒤로</button><h2 id="panel-title"></h2><button id="close" aria-label="닫기"><svg class="icon" aria-hidden="true"><use href="/vendor/lucide/lobby.svg#x"></use></svg></button></div><div id="panel-body"></div></dialog>
+<script type="module" src="/lobby/home.js"></script></body></html>
